@@ -1,7 +1,7 @@
 #include "FCFileInfo.hpp"
-
-
+#include <iostream>
 int main()
 {
-    FCFileInfo file();
+    std::cout << FCFileType::ERR << std::endl;
+    FCFileInfo file = FCFileInfo::factory.constructFCFileInfo("/tmp/file1");
 }
