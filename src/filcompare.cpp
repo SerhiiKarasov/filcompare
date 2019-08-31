@@ -2,6 +2,5 @@
 #include <iostream>
 int main()
 {
-    std::cout << FCFileType::ERR << std::endl;
-    FCFileInfo file = FCFileInfo::factory.constructFCFileInfo("/tmp/file1");
+    FCFileInfo file = FCFileInfo::factory.constructFCFileInfoFromFs("/tmp/file1");
 }

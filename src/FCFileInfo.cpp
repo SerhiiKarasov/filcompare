@@ -14,13 +14,11 @@
 #include "FCFileInfoHelpers.hpp"
 #include <tuple>
 
-
-
 std::string FCFileInfo::getFilePath() const noexcept
 {
     return filePath;
 }
-constexpr uint64_t FCFileInfo::getFileCrc() const noexcept
+uint64_t FCFileInfo::getFileCrc() const noexcept
 {
     return fileCrc;
 }
@@ -28,11 +26,11 @@ std::string FCFileInfo::getFileAcls() const noexcept
 {
     return fileAcls;
 }
-constexpr uint64_t FCFileInfo::getSize() const noexcept
+uint64_t FCFileInfo::getFileSize() const noexcept
 {
     return fileSize;
 }
-constexpr uint32_t FCFileInfo::getFilePerms() const noexcept
+uint32_t FCFileInfo::getFilePerms() const noexcept
 {
     return filePerms;
 }
@@ -41,22 +39,22 @@ std::string FCFileInfo::getFileCaps() const noexcept
     return fileCaps;
 }
 
-constexpr FCFileType FCFileInfo::getFileType() const noexcept
+FCFileType FCFileInfo::getFileType() const noexcept
 {
     return fileType;
 }
 
-constexpr uint32_t FCFileInfo::getFileOwner() const noexcept
+uint32_t FCFileInfo::getFileOwner() const noexcept
 {
     return fileOwner;
 }
 
-constexpr uint32_t FCFileInfo::getFileOwnerGroup() const noexcept
+uint32_t FCFileInfo::getFileOwnerGroup() const noexcept
 {
     return fileOwnerGroup;
 }
 
-FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &fileName)
+FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::string &fileName)
 {
 
     struct stat fileStat;
@@ -113,4 +111,25 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string 
                         fileOwner,
                         fileOwnerGroup);
     return fileInfo;
+}
+
+FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &mFilePath,
+                                                              const std::string &mFileAcls,
+                                                              const std::string &mFileCaps,
+                                                              const uint64_t mFileSize,
+                                                              const uint64_t mFileCrc,
+                                                              const uint32_t mFilePerms,
+                                                              const FCFileType mFileType,
+                                                              const uint32_t mFileOwner,
+                                                              const uint32_t mFileOwnerGroup)
+{
+    return FCFileInfo{mFilePath,
+                      mFileAcls,
+                      mFileCaps,
+                      mFileSize,
+                      mFileCrc,
+                      mFilePerms,
+                      mFileType,
+                      mFileOwner,
+                      mFileOwnerGroup};
 }

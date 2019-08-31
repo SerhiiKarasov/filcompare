@@ -74,17 +74,26 @@ public:
     class FCFileInfoFactory
     {
     public:
-        static FCFileInfo constructFCFileInfo(const std::string &fileName);
+        static FCFileInfo constructFCFileInfoFromFs(const std::string &fileName);
+        static FCFileInfo constructFCFileInfo(const std::string &mFilePath,
+               const std::string &mFileAcls,
+               const std::string &mFileCaps,
+               const uint64_t mFileSize,
+               const uint64_t mFileCrc,
+               const uint32_t mFilePerms,
+               const FCFileType mFileType,
+               const uint32_t mFileOwner,
+               const uint32_t mFileOwnerGroup);
     };
     virtual ~FCFileInfo() = default;
     FCFileInfo() = default;
 
-    constexpr uint64_t getFileCrc() const noexcept;
-    constexpr uint64_t getSize() const noexcept;
-    constexpr uint32_t getFilePerms() const noexcept;
-    constexpr FCFileType getFileType() const noexcept;
-    constexpr uint32_t getFileOwner() const noexcept;
-    constexpr uint32_t getFileOwnerGroup() const noexcept;
+    uint64_t getFileCrc() const noexcept;
+    uint64_t getFileSize() const noexcept;
+    uint32_t getFilePerms() const noexcept;
+    FCFileType getFileType() const noexcept;
+    uint32_t getFileOwner() const noexcept;
+    uint32_t getFileOwnerGroup() const noexcept;
     std::string getFilePath() const noexcept;
     std::string getFileAcls() const noexcept;
     std::string getFileCaps() const noexcept;

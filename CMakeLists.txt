@@ -11,5 +11,5 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif()
 
 add_subdirectory(src)
-#add_subdirectory(test)
-#add_subdirectory(submodules)
+add_subdirectory(tests)
+add_subdirectory(submodules)
