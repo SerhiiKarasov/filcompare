@@ -2,7 +2,7 @@
 
 #include "FCFileInfo.hpp"
 
-#include <sys/stat.h>           // for stat()
+#include <sys/stat.h> // for stat()
 
 /**
  * @file FCFileInfoHelpers.hpp
@@ -20,7 +20,7 @@ namespace FCFileInfoHelpers
 std::pair<bool, uint64_t> readCrc(const std::string &mFile) noexcept;
 std::pair<bool, std::string> readAcls(const std::string &mFile) noexcept;
 std::pair<bool, std::string> readCaps(const std::string &mFile) noexcept;
-std::pair<bool, struct stat> readFileStat(const std::string &mFile) noexcept;
+struct stat readFileStat(const std::string &mFile) noexcept;
 std::pair<bool, FCFileType> readFileType(const struct stat &mFileStat, const std::string &mFileName) noexcept;
 
 uint32_t readFileOwner(const struct stat &mFileStat) noexcept;

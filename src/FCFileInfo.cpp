@@ -58,12 +58,7 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::s
 {
 
     struct stat fileStat;
-    bool isReadFileStatOk{false};
-    std::tie(isReadFileStatOk, fileStat) = FCFileInfoHelpers::readFileStat(fileName);
-    if (!isReadFileStatOk)
-    {
-        throw std::runtime_error("Failed to read file type of file.");
-    }
+    fileStat = FCFileInfoHelpers::readFileStat(fileName);
 
     uint32_t fileOwner = FCFileInfoHelpers::readFileOwner(fileStat);
     uint32_t fileOwnerGroup = FCFileInfoHelpers::readFileOwnerGroup(fileStat);
@@ -92,7 +87,6 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::s
     {
         throw std::runtime_error("Failed to read type for file.");
     }
-    // std::pair<bool, uint64_t> readCrc(const std::string &file) noexcept;
     uint64_t fileCrc{0};
     bool isReadFileCrcOk{false};
     std::tie(isReadFileCrcOk, fileCrc) = FCFileInfoHelpers::readCrc(fileName);

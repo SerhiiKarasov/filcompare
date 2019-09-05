@@ -1,5 +1,3 @@
-#pragma once
-
 #include "FCFileInfoHelpers.hpp"
 
 #include <sys/stat.h>           // for struct stat
@@ -125,30 +123,15 @@ std::pair<bool, std::string> FCFileInfoHelpers::readCaps(const std::string &mFil
     return std::pair<bool, std::string>(result, CAPS);
 }
 
-std::pair<bool, struct stat> FCFileInfoHelpers::readFileStat(const std::string &mFile) noexcept
+struct stat FCFileInfoHelpers::readFileStat(const std::string &mFile) noexcept
 {
-    bool result{true};
     struct stat fileattrib;
-    try
+    //lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
+    if (-1 == lstat(mFile.c_str(), &fileattrib))
     {
-        //lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
-        if (-1 == lstat(mFile.c_str(), &fileattrib))
-        {
-            std::cout << "Problem while running stat() on " << mFile << std::endl;
-            result = false;
-        }
+        std::cout << "Problem while running stat() on " << mFile << std::endl;
     }
-    catch (std::exception &e)
-    {
-        std::cout << "Exception was caught during reading stat for file: " << mFile << ". Message: " << e.what() << '\n';
-        result = false;
-    }
-    catch (...)
-    {
-        std::cerr << "Caught an unknown exception during reading of stat for file: " << mFile << std::endl;
-        result = false;
-    }
-    return std::pair<bool, struct stat>(result, fileattrib);
+    return fileattrib;
 }
 
 uint64_t FCFileInfoHelpers::readFileSize(const struct stat &mFileStat) noexcept
