@@ -9,11 +9,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: googletests_submodule_init
+      run: git submodule update --init
     - name: make_build_dir
       run: mkdir build
-    - name: go_to_build_dir
-      run: cd build
     - name: run_cmake
-      run: cmake ..
-    - name: run_cmake_build
-      run: cmake --build .
+      run: cd build && echo $PWD && cmake .. && cmake --build .
+

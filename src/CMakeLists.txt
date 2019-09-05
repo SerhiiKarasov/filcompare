@@ -1,4 +1,4 @@
-find_package(Boost COMPONENTS system filesystem program_options REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(ZLIB)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -15,7 +15,6 @@ target_link_libraries(${PROJECT_NAME}_lib
                              sqlite3
                              Boost::system
                              Boost::filesystem
-                             Boost::program_options
                              ${ZLIB_LIBRARIES})
 
 add_executable(${PROJECT_NAME} filcompare.cpp)
