@@ -76,6 +76,7 @@ std::pair<bool, std::string> FCFileInfoHelpers::readAcls(const std::string &mFil
         fileAclSize = acl_size(fileAcl);
         aclstring = std::string(acl_to_text(fileAcl, &fileAclSize));
         acl_free(fileAcl);
+        aclstring.erase(std::remove_if(aclstring.begin(), aclstring.end(), ::isspace), aclstring.end());
     }
     catch (std::exception &e)
     {

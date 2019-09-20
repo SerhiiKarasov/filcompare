@@ -196,4 +196,3 @@ bool operator!=(const FCFileInfo &a, const FCFileInfo &b)
 {
     return !(a == b);
 }
-
