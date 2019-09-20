@@ -13,6 +13,7 @@
 #include "FCFileInfo.hpp"
 #include "FCFileInfoHelpers.hpp"
 #include <tuple>
+#include <iostream>
 
 std::string FCFileInfo::getFilePath() const noexcept
 {
@@ -52,6 +53,11 @@ uint32_t FCFileInfo::getFileOwner() const noexcept
 uint32_t FCFileInfo::getFileOwnerGroup() const noexcept
 {
     return fileOwnerGroup;
+}
+
+const auto FCFileInfo::reflect() const
+{
+    return std::tie(filePath, fileSize, fileCrc, filePerms, fileType, fileOwner, fileOwnerGroup, fileAcls, fileCaps, filePathHash, fileCrcHash);
 }
 
 FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::string &fileName)
@@ -127,3 +133,67 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string 
                       mFileOwner,
                       mFileOwnerGroup};
 }
+
+bool operator==(const FCFileInfo &lhs, const FCFileInfo &rhs)
+{
+    bool result = (lhs.fileCrcHash == rhs.fileCrcHash);
+    result = result && (lhs.filePathHash == rhs.filePathHash);
+    return result && (lhs.fileSize == rhs.fileSize);
+}
+
+bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs)
+{
+    if (lhs.fileCrcHash == rhs.fileCrcHash)
+    {
+        if (lhs.filePathHash == rhs.filePathHash)
+        {
+            return lhs.fileSize < rhs.fileSize;
+        }
+        return lhs.filePathHash < rhs.filePathHash;
+    }
+    return lhs.fileCrcHash < rhs.fileCrcHash;
+}
+
+template <size_t Index, typename TupleType, typename Functor>
+auto tuple_at(const TupleType &tpl, const Functor &func) -> void
+{
+    const auto &val = std::get<Index>(tpl);
+    func(val);
+}
+
+template <typename TupleType, typename Functor, size_t Index = 0>
+auto tuple_for_each(const TupleType &tpl, const Functor &ifunctor) -> void
+{
+    constexpr auto tuple_size = std::tuple_size_v<TupleType>;
+    if constexpr (Index < tuple_size)
+    {
+        tuple_at<Index>(tpl, ifunctor);
+        tuple_for_each<TupleType, Functor, Index + 1>(tpl, ifunctor);
+    }
+}
+
+std::ostream &operator<<(std::ostream &output, const FCFileInfo &f)
+{
+    tuple_for_each(f.reflect(), [&output](const auto &m) {
+        output << m << " ";
+    });
+    return output;
+}
+
+bool operator>(const FCFileInfo &a, const FCFileInfo &b)
+{
+    return (b < a);
+}
+bool operator<=(const FCFileInfo &a, const FCFileInfo &b)
+{
+    return !(a > b);
+}
+bool operator>=(const FCFileInfo &a, const FCFileInfo &b)
+{
+    return !(a < b);
+}
+bool operator!=(const FCFileInfo &a, const FCFileInfo &b)
+{
+    return !(a == b);
+}
+

@@ -14,6 +14,8 @@
 
 #include <string>
 #include <ostream>
+#include <functional> //for std::hash
+#include <tuple>      //for tuple
 
 enum class FCFileType : char
 {
@@ -40,6 +42,14 @@ class FCFileInfo
 
 private:
     friend class FCFileInfoFactory;
+    friend std ::ostream &operator<<(std ::ostream &output, const FCFileInfo &f);
+    friend bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs);
+    friend bool operator==(const FCFileInfo &lhs, const FCFileInfo &rhs);
+    friend bool operator>(const FCFileInfo &a, const FCFileInfo &b);
+    friend bool operator<=(const FCFileInfo &a, const FCFileInfo &b);
+    friend bool operator>=(const FCFileInfo &a, const FCFileInfo &b);
+    friend bool operator!=(const FCFileInfo &a, const FCFileInfo &b);
+
     FCFileInfo(const std::string &mFilePath,
                const std::string &mFileAcls,
                const std::string &mFileCaps,
@@ -56,7 +66,9 @@ private:
                                                  fileOwnerGroup{mFileOwnerGroup},
                                                  filePath{mFilePath},
                                                  fileAcls{mFileAcls},
-                                                 fileCaps{mFileCaps}
+                                                 fileCaps{mFileCaps},
+                                                 filePathHash{std::hash<std::string>{}(mFilePath)},
+                                                 fileCrcHash{std::hash<std::uint64_t>{}(mFileCrc)}
     {
     }
 
@@ -69,6 +81,11 @@ private:
     std::string filePath;
     std::string fileAcls;
     std::string fileCaps;
+    std::hash<std ::string>::result_type filePathHash;
+    std::hash<std ::string>::result_type fileCrcHash;
+    
+    //implementation of reflect solution to iterate over class members
+    const auto reflect() const;
 
 public:
     class FCFileInfoFactory
@@ -76,14 +93,14 @@ public:
     public:
         static FCFileInfo constructFCFileInfoFromFs(const std::string &fileName);
         static FCFileInfo constructFCFileInfo(const std::string &mFilePath,
-               const std::string &mFileAcls,
-               const std::string &mFileCaps,
-               const uint64_t mFileSize,
-               const uint64_t mFileCrc,
-               const uint32_t mFilePerms,
-               const FCFileType mFileType,
-               const uint32_t mFileOwner,
-               const uint32_t mFileOwnerGroup);
+                                              const std::string &mFileAcls,
+                                              const std::string &mFileCaps,
+                                              const uint64_t mFileSize,
+                                              const uint64_t mFileCrc,
+                                              const uint32_t mFilePerms,
+                                              const FCFileType mFileType,
+                                              const uint32_t mFileOwner,
+                                              const uint32_t mFileOwnerGroup);
     };
     virtual ~FCFileInfo() = default;
     FCFileInfo() = default;
