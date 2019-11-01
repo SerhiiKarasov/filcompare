@@ -10,10 +10,10 @@
  *
  */
 
-#include <tuple>
 #include <iostream>
-#include "FCFileInfo.hpp"
+#include <tuple>
 #include "FCFileInfoHelpers.hpp"
+#include "FCFileInfo.hpp"
 
 std::string FCFileInfo::getFilePath() const noexcept
 {
@@ -55,7 +55,7 @@ uint32_t FCFileInfo::getFileOwnerGroup() const noexcept
     return fileOwnerGroup;
 }
 
-const auto FCFileInfo::reflect() const
+auto FCFileInfo::reflect() const
 {
     return std::tie(filePath, fileSize, fileCrc, filePerms, fileType, fileOwner, fileOwnerGroup, fileAcls, fileCaps, filePathHash, fileCrcHash);
 }
@@ -63,7 +63,9 @@ const auto FCFileInfo::reflect() const
 FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::string &fileName)
 {
 
-    struct stat fileStat;
+    struct stat fileStat
+    {
+    };
     fileStat = FCFileInfoHelpers::readFileStat(fileName);
 
     uint32_t fileOwner = FCFileInfoHelpers::readFileOwner(fileStat);

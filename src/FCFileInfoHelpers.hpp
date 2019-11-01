@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SRC_FCFILEINFOHELPERS_HPP_
+#define SRC_FCFILEINFOHELPERS_HPP_
 
 #include <sys/stat.h> // for stat()
 #include <utility>    // for pair<>
@@ -30,3 +31,5 @@ uint64_t readFileSize(const struct stat &mFileStat) noexcept;
 uint32_t readFilePerms(const struct stat &mFileStat) noexcept;
 
 } // namespace FCFileInfoHelpers
+#endif /* SRC_FCFILEINFOHELPERS_HPP_ */
+

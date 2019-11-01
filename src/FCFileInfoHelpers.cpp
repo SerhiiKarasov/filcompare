@@ -20,8 +20,6 @@
  *
  */
 
-namespace fs = ::boost::filesystem;
-
 std::streamsize const kBufferSize = 4096;
 
 std::pair<bool, uint64_t> FCFileInfoHelpers::readCrc(const std::string &mFile) noexcept
@@ -38,13 +36,13 @@ std::pair<bool, uint64_t> FCFileInfoHelpers::readCrc(const std::string &mFile) n
             {
                 char buffer[kBufferSize];
                 ifs.read(buffer, kBufferSize);
-                crc = crc32(crc, (const Bytef *)&buffer, ifs.gcount());
+                crc = crc32(crc, reinterpret_cast<const Bytef *>(&buffer), ifs.gcount());
             } while (ifs);
         }
         else
         {
             std::cerr << "Problem with opening the file: " << mFile << "'." << std::endl;
-            throw("Failed to open file.");
+            throw std::runtime_error("Failed to open file.");
         }
     }
     catch (std::exception &e)
@@ -94,7 +92,7 @@ std::pair<bool, std::string> FCFileInfoHelpers::readAcls(const std::string &mFil
 std::pair<bool, std::string> FCFileInfoHelpers::readCaps(const std::string &mFile) noexcept
 {
     bool result{true};
-    std::string CAPS{""};
+    std::string CAPS{};
     try
     {
         cap_t fileCaps = cap_get_file(mFile.c_str());
@@ -126,7 +124,7 @@ std::pair<bool, std::string> FCFileInfoHelpers::readCaps(const std::string &mFil
 
 struct stat FCFileInfoHelpers::readFileStat(const std::string &mFile) noexcept
 {
-    struct stat fileattrib;
+    struct stat fileattrib{};
     //lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
     if (-1 == lstat(mFile.c_str(), &fileattrib))
     {

@@ -2,7 +2,7 @@ find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(ZLIB)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_library(${PROJECT_NAME}_lib
             FCFileInfo.cpp
             FCFileInfoHelpers.cpp

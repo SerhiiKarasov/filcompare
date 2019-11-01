@@ -11,6 +11,7 @@ docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare
 docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cppcheck --force --include=/usr/include --suppress=missingIncludeSystem --enable=all src/
 docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cpplint --filter=-whitespace,-readability,-legal src/*pp
 docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare clang-tidy -checks=*  src/*pp 
+docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare clang-tidy -p build/-header-filter=.* -checks=*,-fuchsia-overloaded-operator,-llvm-header-guard,-llvm-include-order,-google-readability-braces-around-statements,-readability-avoid-const-params-in-decls,-fuchsia-default-arguments  src/*pp
 ```
 * run cpp check
 ```shell

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SRC_FCFILEINFO_HPP_
+#define SRC_FCFILEINFO_HPP_
 
 /**
  * @file FCFileInfo.hpp
@@ -83,9 +84,9 @@ private:
     std::string fileCaps;
     std::hash<std ::string>::result_type filePathHash;
     std::hash<std ::string>::result_type fileCrcHash;
-    
+
     //implementation of reflect solution to iterate over class members
-    const auto reflect() const;
+    auto reflect() const;
 
 public:
     class FCFileInfoFactory
@@ -103,7 +104,7 @@ public:
                                               const uint32_t mFileOwnerGroup);
     };
     virtual ~FCFileInfo() = default;
-    FCFileInfo() = default;
+    FCFileInfo() = delete;
 
     uint64_t getFileCrc() const noexcept;
     uint64_t getFileSize() const noexcept;
@@ -116,4 +117,10 @@ public:
     std::string getFileCaps() const noexcept;
 
     static FCFileInfoFactory factory;
+
+    FCFileInfo(const FCFileInfo &) = default;
+    FCFileInfo &operator=(const FCFileInfo &) = default;
+    FCFileInfo(FCFileInfo &&) = default;
+    FCFileInfo &operator=(FCFileInfo &&) = default;
 };
+#endif /* SRC_FCFILEINFO_HPP_ */
