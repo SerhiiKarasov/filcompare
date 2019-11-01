@@ -13,7 +13,11 @@ RUN apt-get update && \
     libsqlite3-dev \
     graphviz \
     libacl1-dev \
-    libcap-dev 
+    libcap-dev \
+	cppcheck  \
+	python3-pip \
+	clang-tidy && \
+	pip3 install cpplint
 
 WORKDIR /opt/project
 

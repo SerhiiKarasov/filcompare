@@ -1,13 +1,13 @@
-#include "FCFileInfoHelpers.hpp"
 
 #include <sys/stat.h>           // for struct stat
+#include <sys/acl.h>            // for acl_get_file
+#include <sys/capability.h>     // for cap_get_file()
 #include <zlib.h>               // for crc32()
 #include <fstream>              // for ifstream
 #include <iostream>             // for cerr
-#include <sys/acl.h>            // for acl_get_file
-#include <sys/capability.h>     // for cap_get_file()
-#include <sys/stat.h>           // for stat()
 #include <boost/filesystem.hpp> // for boost::filestystem
+#include "FCFileInfoHelpers.hpp"
+
 /**
  * @file FCFileInfoHelpers.hpp
  *
@@ -22,11 +22,11 @@
 
 namespace fs = ::boost::filesystem;
 
-std::streamsize const buffer_size = 4096;
+std::streamsize const kBufferSize = 4096;
 
 std::pair<bool, uint64_t> FCFileInfoHelpers::readCrc(const std::string &mFile) noexcept
 {
-    unsigned long crc{0};
+    uint64_t crc{0};
     bool result{true};
     try
     {
@@ -36,8 +36,8 @@ std::pair<bool, uint64_t> FCFileInfoHelpers::readCrc(const std::string &mFile) n
         {
             do
             {
-                char buffer[buffer_size];
-                ifs.read(buffer, buffer_size);
+                char buffer[kBufferSize];
+                ifs.read(buffer, kBufferSize);
                 crc = crc32(crc, (const Bytef *)&buffer, ifs.gcount());
             } while (ifs);
         }

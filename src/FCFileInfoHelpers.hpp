@@ -1,8 +1,9 @@
 #pragma once
 
-#include "FCFileInfo.hpp"
-
 #include <sys/stat.h> // for stat()
+#include <utility>    // for pair<>
+#include <string>     // for string
+#include "FCFileInfo.hpp"
 
 /**
  * @file FCFileInfoHelpers.hpp

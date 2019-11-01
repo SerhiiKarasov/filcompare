@@ -1,5 +1,6 @@
-#include "FCFileInfo.hpp"
 #include <iostream>
+#include "FCFileInfo.hpp"
+
 int main()
 {
     FCFileInfo file = FCFileInfo::factory.constructFCFileInfoFromFs("/tmp/file1");
