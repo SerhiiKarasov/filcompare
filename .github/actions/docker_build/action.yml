@@ -1,0 +1,8 @@
+
+name: 'docker build'
+description: 'build filcompare in docker'
+author: 'SergeyKarasyov'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

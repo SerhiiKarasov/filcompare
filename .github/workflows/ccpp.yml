@@ -1,0 +1,34 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler_version:
+          - 7
+          - 8
+        compiler:
+          - gcc
+        build_type:
+          - Release
+      
+    steps:
+    - uses: actions/checkout@v1
+    - name: googletests_submodule_init
+      run: git submodule update --init
+    - name: docker_image_build
+      run: docker build --network=host -t build_filcompare .
+    - name: run_build_in_docker
+      run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare
+    - name: cppcheck
+      run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cppcheck --force --include=/usr/include --suppress=missingIncludeSystem --enable=all src/
+    - name: cpplint
+      run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cpplint --filter=-whitespace,-readability,-legal src/*pp
+    - name: clang-tidy
+      run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare clang-tidy -p build/-header-filter=.* -checks=*,-fuchsia-overloaded-operator,-llvm-header-guard,-llvm-include-order,-google-readability-braces-around-statements,-readability-avoid-const-params-in-decls,-fuchsia-default-arguments  src/*pp
+
+
+
