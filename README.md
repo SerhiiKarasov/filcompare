@@ -8,6 +8,9 @@ Tool for:
 ```shell
 docker build --network=host -t build_filcompare .
 docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare
+docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cppcheck --force --include=/usr/include --suppress=missingIncludeSystem --enable=all src/
+docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cpplint --filter=-whitespace,-readability,-legal src/*pp
+docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare clang-tidy -checks=*  src/*pp 
 ```
 * run cpp check
 ```shell

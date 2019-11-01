@@ -10,10 +10,10 @@
  *
  */
 
-#include "FCFileInfo.hpp"
-#include "FCFileInfoHelpers.hpp"
 #include <tuple>
 #include <iostream>
+#include "FCFileInfo.hpp"
+#include "FCFileInfoHelpers.hpp"
 
 std::string FCFileInfo::getFilePath() const noexcept
 {
