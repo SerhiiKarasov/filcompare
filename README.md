@@ -1,7 +1,9 @@
-# filcompare
-Tool for:  
-- dumping info on filesystem or folder content.  
-- comparing content of folders, filesystems.  
+# [filcompare](https://sergeykarasyov.github.io/filcompare/)
+[![Actions Status](https://github.com/SergeyKarasyov/filcompare/workflows/filcompare/badge.svg)](https://github.com/SergeyKarasyov/filcompare/actions)
+
+A tool for:  
+	- dumping info on filesystem or folder content.  
+	- comparing content of folders, filesystems.  
 
 # dev hints
 * run build in docker
