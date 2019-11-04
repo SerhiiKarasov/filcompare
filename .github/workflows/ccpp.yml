@@ -24,7 +24,7 @@ jobs:
     - name: run_build_in_docker
       run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare
     - name: cppcheck
-      run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cppcheck --force --include=/usr/include --suppress=missingIncludeSystem --enable=all src/
+      run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cppcheck --error-exitcode --force --include=/usr/include --suppress=missingIncludeSystem --enable=all src/
     - name: cpplint
       run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cpplint --filter=-whitespace,-readability,-legal src/*pp
     - name: clang-tidy
