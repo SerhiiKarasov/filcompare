@@ -1,13 +1,3 @@
-
-#include <sys/stat.h>           // for struct stat
-#include <sys/acl.h>            // for acl_get_file
-#include <sys/capability.h>     // for cap_get_file()
-#include <zlib.h>               // for crc32()
-#include <fstream>              // for ifstream
-#include <iostream>             // for cerr
-#include <boost/filesystem.hpp> // for boost::filestystem
-#include "FCFileInfoHelpers.hpp"
-
 /**
  * @file FCFileInfoHelpers.hpp
  *
@@ -19,6 +9,17 @@
  * Contact: sergeyvkarasyov@gmail.com
  *
  */
+
+#include "FCFileInfoHelpers.hpp"
+#include <experimental/filesystem>
+
+#include <sys/stat.h>       // for struct stat
+#include <sys/acl.h>        // for acl_get_file
+#include <sys/capability.h> // for cap_get_file()
+#include <zlib.h>           // for crc32()
+#include <fstream>          // for ifstream
+#include <iostream>         // for cerr
+// #include <boost/filesystem.hpp> // for boost::filestystem
 
 std::streamsize const kBufferSize = 4096;
 
@@ -124,7 +125,9 @@ std::pair<bool, std::string> FCFileInfoHelpers::readCaps(const std::string &mFil
 
 struct stat FCFileInfoHelpers::readFileStat(const std::string &mFile) noexcept
 {
-    struct stat fileattrib{};
+    struct stat fileattrib
+    {
+    };
     //lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
     if (-1 == lstat(mFile.c_str(), &fileattrib))
     {
@@ -206,4 +209,55 @@ uint32_t FCFileInfoHelpers::readFileOwner(const struct stat &mFileStat) noexcept
 uint32_t FCFileInfoHelpers::readFileOwnerGroup(const struct stat &mFileStat) noexcept
 {
     return mFileStat.st_gid;
+}
+bool FCFileInfoHelpers::isBlockDev(const std::string &filename) noexcept
+{
+    bool result{false};
+    try
+    {
+        auto filestat = FCFileInfoHelpers::readFileStat(filename);
+        switch (filestat.st_mode & S_IFMT)
+        {
+        case S_IFBLK:
+            result = true;
+            break;
+        default:
+            result = false;
+            break;
+        }
+    }
+    catch (std::exception &e)
+    {
+        std::cout << "Exception was caught in isBlockDev for file: " << filename << ". Message: " << e.what() << '\n';
+        exit(-1);
+    }
+    catch (...)
+    {
+        std::cerr << "Caught an unknown exception in isBlockDev for file: " << filename << std::endl;
+        exit(-1);
+    }
+    return result;
+}
+
+void FCFileInfoHelpers::createDir(const std::string &dirName) noexcept
+{
+    std::error_code err;
+    std::experimental::filesystem::create_directory(dirName, err);
+    if (!err)
+    {
+        std::cerr << "Cannot create folder: " << dirName << std::endl;
+        exit(-1);
+    }
+}
+
+bool FCFileInfoHelpers::fileExists(const std::string &fileName) noexcept
+{
+    std::error_code err;
+    auto result = std::experimental::filesystem::exists(fileName, err);
+    if (!err)
+    {
+        std::cerr << "Cannot check if file exists: " << fileName << std::endl;
+        exit(-1);
+    }
+    return result;
 }
