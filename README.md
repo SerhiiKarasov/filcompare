@@ -8,6 +8,7 @@ A tool for:
 # dev hints
 * run build in docker
 ```shell
+git submodule update --init --recursive
 docker build --network=host -t build_filcompare .
 docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare
 docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare cppcheck --force --include=/usr/include --suppress=missingIncludeSystem --enable=all src/
@@ -26,3 +27,9 @@ cppcheck --force --include=/usr/include --enable=all src/
 ```shell
 valgrind --leak-check=full --show-leak-kinds=all ./build/src/filcompare
 ```
+* build dependencies
+```
+sudo apt-get install googletests cmake libcap-dev libacl1-dev gcc clang libboost-filesystem-dev libboost-filesystem-dev zlib1g-dev
+git submodule update --init --recursive
+
+``` 
