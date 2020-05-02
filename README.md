@@ -29,7 +29,7 @@ valgrind --leak-check=full --show-leak-kinds=all ./build/src/filcompare
 ```
 * build dependencies
 ```
-sudo apt-get install googletests cmake libcap-dev libacl1-dev gcc clang libboost-filesystem-dev libboost-filesystem-dev zlib1g-dev
+sudo apt-get install libgtest-dev cmake libcap-dev libacl1-dev gcc clang libboost-filesystem-dev libboost-filesystem-dev zlib1g-dev libsqlite3-dev 
 git submodule update --init --recursive
 
 ``` 

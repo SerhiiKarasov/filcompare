@@ -10,7 +10,6 @@ RUN apt-get update && \
 	libboost-system-dev \
 	libsqlite3-dev \
 	zlib1g-dev \
-    libsqlite3-dev \
     graphviz \
     libacl1-dev \
     libcap-dev \
