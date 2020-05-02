@@ -29,8 +29,6 @@ target_link_libraries(${PROJECT_NAME}_lib
                       PUBLIC acl
                              cap
                              sqlite3
-                             Boost::system
-                             Boost::filesystem
                              ${ZLIB_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME}_lib PRIVATE "stdc++fs")
