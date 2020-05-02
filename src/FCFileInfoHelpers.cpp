@@ -19,7 +19,6 @@
 #include <zlib.h>           // for crc32()
 #include <fstream>          // for ifstream
 #include <iostream>         // for cerr
-// #include <boost/filesystem.hpp> // for boost::filestystem
 
 std::streamsize const kBufferSize = 4096;
 

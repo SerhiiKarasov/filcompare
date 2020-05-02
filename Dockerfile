@@ -5,9 +5,6 @@ RUN apt-get update && \
 	build-essential \
 	git cmake autoconf \
 	libtool pkg-config \
-	libboost-all-dev \
-	libboost-filesystem-dev \
-	libboost-system-dev \
 	libsqlite3-dev \
 	zlib1g-dev \
     graphviz \

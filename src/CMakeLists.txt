@@ -1,4 +1,3 @@
-find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(ZLIB)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)

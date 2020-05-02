@@ -6,6 +6,10 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-7
+      - libacl1-dev
+      - libcap-dev
+      - libsqlite3-dev
+      - zlib1g-dev
   coverity_scan:
     project:
       name: "filcompare"
