@@ -28,14 +28,7 @@ matrix:
         - GCC_VER="7" CPPCHECK=1 COVERAGE=1 CMAKE_OPTIONS="-D RUN_FUZZY_TESTS:BOOL=TRUE"
     - os: linux
       compiler: clang
-      addons:
-        apt:
-          sources:
-            - llvm-toolchain-trusty-6.0
-          packages:
-            - clang-6.0
       env:
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
         - CMAKE_OPTIONS="-D DYNLOAD_ENABLED:BOOL=FALSE -D MULTITHREAD_SUPPORT_ENABLED:BOOL=FALSE -D USE_STD_MAKE_SHARED:BOOL=TRUE" BUILD_ONLY=1
   
 before_install:
