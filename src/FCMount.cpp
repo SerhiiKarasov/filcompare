@@ -32,22 +32,17 @@ FCMount::~FCMount()
 bool FCMount::mountFS(const std::string &what, const std::string &where)
 {
     auto mount_result = false;
-    if (!FCFileInfoHelpers::fileExists(what))
-    {
+    if (!FCFileInfoHelpers::fileExists(what)) {
         std::cerr << "File doesn't exist: " << what << std::endl;
     }
     std::string mount_command = "";
-    if (FCFileInfoHelpers::isBlockDev(what))
-    {
+    if (FCFileInfoHelpers::isBlockDev(what)) {
         mount_command = "mount  -o ro " + what + " " + where;
-    }
-    else
-    {
+    } else {
         mount_command = "mount  -o ro,loop " + what + " " + where;
     }
     mount_result = system(mount_command.c_str());
-    if (0 != mount_result)
-    {
+    if (0 != mount_result) {
         std::cerr << "Cannot mount " << what << " to mount point " << where << std::endl;
         std::cerr << "Return code from mount command " << mount_result << " " << std::strerror(errno) << std::endl;
         mount_result = false;
@@ -59,8 +54,7 @@ bool FCMount::umountFS(const std::string &where)
 {
     auto unmount_command = "umount " + where;
     const auto umount_result = system(unmount_command.c_str());
-    if (0 != umount_result)
-    {
+    if (0 != umount_result) {
         std::cerr << "Cannot unmount from: " << where << std::endl;
         std::cerr << "Return code from umount command " << umount_result << " " << std::strerror(errno) << std::endl;
         return false;

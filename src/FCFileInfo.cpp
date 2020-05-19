@@ -74,66 +74,62 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::s
     uint32_t filePerms = FCFileInfoHelpers::readFilePerms(fileStat);
 
     std::string fileAcls;
-    bool isReadAclsOk{false};
+    bool isReadAclsOk{ false };
     std::tie(isReadAclsOk, fileAcls) = FCFileInfoHelpers::readAcls(fileName);
-    if (!isReadAclsOk)
-    {
+    if (!isReadAclsOk) {
         throw std::runtime_error("Failed to read acls for file.");
     }
 
     std::string fileCaps;
-    bool isReadCapsOk{false};
+    bool isReadCapsOk{ false };
     std::tie(isReadCapsOk, fileCaps) = FCFileInfoHelpers::readCaps(fileName);
-    if (!isReadCapsOk)
-    {
+    if (!isReadCapsOk) {
         throw std::runtime_error("Failed to read caps for file.");
     }
-    FCFileType fileType{FCFileType::ERR};
-    bool isReadFileTypeOk{false};
+    FCFileType fileType{ FCFileType::ERR };
+    bool isReadFileTypeOk{ false };
     std::tie(isReadFileTypeOk, fileType) = FCFileInfoHelpers::readFileType(fileStat, fileName);
-    if (!isReadFileTypeOk)
-    {
+    if (!isReadFileTypeOk) {
         throw std::runtime_error("Failed to read type for file.");
     }
-    uint64_t fileCrc{0};
-    bool isReadFileCrcOk{false};
+    uint64_t fileCrc{ 0 };
+    bool isReadFileCrcOk{ false };
     std::tie(isReadFileCrcOk, fileCrc) = FCFileInfoHelpers::readCrc(fileName);
-    if (!isReadFileCrcOk)
-    {
+    if (!isReadFileCrcOk) {
         throw std::runtime_error("Failed to read crc of file.");
     }
 
     FCFileInfo fileInfo(fileName,
-                        fileAcls,
-                        fileCaps,
-                        fileSize,
-                        fileCrc,
-                        filePerms,
-                        fileType,
-                        fileOwner,
-                        fileOwnerGroup);
+        fileAcls,
+        fileCaps,
+        fileSize,
+        fileCrc,
+        filePerms,
+        fileType,
+        fileOwner,
+        fileOwnerGroup);
     return fileInfo;
 }
 
 FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &mFilePath,
-                                                              const std::string &mFileAcls,
-                                                              const std::string &mFileCaps,
-                                                              const uint64_t mFileSize,
-                                                              const uint64_t mFileCrc,
-                                                              const uint32_t mFilePerms,
-                                                              const FCFileType mFileType,
-                                                              const uint32_t mFileOwner,
-                                                              const uint32_t mFileOwnerGroup)
+    const std::string &mFileAcls,
+    const std::string &mFileCaps,
+    const uint64_t mFileSize,
+    const uint64_t mFileCrc,
+    const uint32_t mFilePerms,
+    const FCFileType mFileType,
+    const uint32_t mFileOwner,
+    const uint32_t mFileOwnerGroup)
 {
-    return FCFileInfo{mFilePath,
-                      mFileAcls,
-                      mFileCaps,
-                      mFileSize,
-                      mFileCrc,
-                      mFilePerms,
-                      mFileType,
-                      mFileOwner,
-                      mFileOwnerGroup};
+    return FCFileInfo{ mFilePath,
+        mFileAcls,
+        mFileCaps,
+        mFileSize,
+        mFileCrc,
+        mFilePerms,
+        mFileType,
+        mFileOwner,
+        mFileOwnerGroup };
 }
 
 bool operator==(const FCFileInfo &lhs, const FCFileInfo &rhs)
@@ -145,10 +141,8 @@ bool operator==(const FCFileInfo &lhs, const FCFileInfo &rhs)
 
 bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs)
 {
-    if (lhs.fileCrcHash == rhs.fileCrcHash)
-    {
-        if (lhs.filePathHash == rhs.filePathHash)
-        {
+    if (lhs.fileCrcHash == rhs.fileCrcHash) {
+        if (lhs.filePathHash == rhs.filePathHash) {
             return lhs.fileSize < rhs.fileSize;
         }
         return lhs.filePathHash < rhs.filePathHash;
@@ -156,19 +150,18 @@ bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs)
     return lhs.fileCrcHash < rhs.fileCrcHash;
 }
 
-template <size_t Index, typename TupleType, typename Functor>
+template<size_t Index, typename TupleType, typename Functor>
 auto tuple_at(const TupleType &tpl, const Functor &func) -> void
 {
     const auto &val = std::get<Index>(tpl);
     func(val);
 }
 
-template <typename TupleType, typename Functor, size_t Index = 0>
+template<typename TupleType, typename Functor, size_t Index = 0>
 auto tuple_for_each(const TupleType &tpl, const Functor &ifunctor) -> void
 {
     constexpr auto tuple_size = std::tuple_size_v<TupleType>;
-    if constexpr (Index < tuple_size)
-    {
+    if constexpr (Index < tuple_size) {
         tuple_at<Index>(tpl, ifunctor);
         tuple_for_each<TupleType, Functor, Index + 1>(tpl, ifunctor);
     }

@@ -13,13 +13,12 @@
  *
  */
 
-#include <sys/stat.h> // for stat()
-#include <utility>    // for pair<>
-#include <string>     // for string
+#include <sys/stat.h>// for stat()
+#include <utility>// for pair<>
+#include <string>// for string
 #include "FCFileInfo.hpp"
 
-namespace FCFileInfoHelpers
-{
+namespace FCFileInfoHelpers {
 std::pair<bool, uint64_t> readCrc(const std::string &mFile) noexcept;
 std::pair<bool, std::string> readAcls(const std::string &mFile) noexcept;
 std::pair<bool, std::string> readCaps(const std::string &mFile) noexcept;
@@ -32,5 +31,5 @@ uint32_t readFilePerms(const struct stat &mFileStat) noexcept;
 bool isBlockDev(const std::string &filename) noexcept;
 void createDir(const std::string &dirName) noexcept;
 bool fileExists(const std::string &fileName) noexcept;
-} // namespace FCFileInfoHelpers
-#endif // SRC_FCFILEINFOHELPERS_HPP_
+}// namespace FCFileInfoHelpers
+#endif// SRC_FCFILEINFOHELPERS_HPP_

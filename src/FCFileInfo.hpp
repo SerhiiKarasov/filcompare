@@ -16,11 +16,10 @@
 
 #include <string>
 #include <ostream>
-#include <functional> //for std::hash
-#include <tuple>      //for tuple
+#include <functional>//for std::hash
+#include <tuple>//for tuple
 
-enum class FCFileType : char
-{
+enum class FCFileType : char {
     REG_FILE = 'r',
     DIR = 'd',
     CHAR_DEVICE = 'c',
@@ -42,7 +41,7 @@ class FCFileInfoFactory;
 class FCFileInfo
 {
 
-private:
+  private:
     friend class FCFileInfoFactory;
     friend std ::ostream &operator<<(std ::ostream &output, const FCFileInfo &f);
     friend bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs);
@@ -53,24 +52,24 @@ private:
     friend bool operator!=(const FCFileInfo &a, const FCFileInfo &b);
 
     FCFileInfo(const std::string &mFilePath,
-               const std::string &mFileAcls,
-               const std::string &mFileCaps,
-               const uint64_t mFileSize,
-               const uint64_t mFileCrc,
-               const uint32_t mFilePerms,
-               const FCFileType mFileType,
-               const uint32_t mFileOwner,
-               const uint32_t mFileOwnerGroup) : fileSize{mFileSize},
-                                                 fileCrc{mFileCrc},
-                                                 filePerms{mFilePerms},
-                                                 fileType{mFileType},
-                                                 fileOwner{mFileOwner},
-                                                 fileOwnerGroup{mFileOwnerGroup},
-                                                 filePath{mFilePath},
-                                                 fileAcls{mFileAcls},
-                                                 fileCaps{mFileCaps},
-                                                 filePathHash{std::hash<std::string>{}(mFilePath)},
-                                                 fileCrcHash{std::hash<std::uint64_t>{}(mFileCrc)}
+        const std::string &mFileAcls,
+        const std::string &mFileCaps,
+        const uint64_t mFileSize,
+        const uint64_t mFileCrc,
+        const uint32_t mFilePerms,
+        const FCFileType mFileType,
+        const uint32_t mFileOwner,
+        const uint32_t mFileOwnerGroup) : fileSize{ mFileSize },
+                                          fileCrc{ mFileCrc },
+                                          filePerms{ mFilePerms },
+                                          fileType{ mFileType },
+                                          fileOwner{ mFileOwner },
+                                          fileOwnerGroup{ mFileOwnerGroup },
+                                          filePath{ mFilePath },
+                                          fileAcls{ mFileAcls },
+                                          fileCaps{ mFileCaps },
+                                          filePathHash{ std::hash<std::string>{}(mFilePath) },
+                                          fileCrcHash{ std::hash<std::uint64_t>{}(mFileCrc) }
     {
     }
 
@@ -89,20 +88,20 @@ private:
     //implementation of reflect solution to iterate over class members
     auto reflect() const;
 
-public:
+  public:
     class FCFileInfoFactory
     {
-    public:
+      public:
         static FCFileInfo constructFCFileInfoFromFs(const std::string &fileName);
         static FCFileInfo constructFCFileInfo(const std::string &mFilePath,
-                                              const std::string &mFileAcls,
-                                              const std::string &mFileCaps,
-                                              const uint64_t mFileSize,
-                                              const uint64_t mFileCrc,
-                                              const uint32_t mFilePerms,
-                                              const FCFileType mFileType,
-                                              const uint32_t mFileOwner,
-                                              const uint32_t mFileOwnerGroup);
+            const std::string &mFileAcls,
+            const std::string &mFileCaps,
+            const uint64_t mFileSize,
+            const uint64_t mFileCrc,
+            const uint32_t mFilePerms,
+            const FCFileType mFileType,
+            const uint32_t mFileOwner,
+            const uint32_t mFileOwnerGroup);
     };
     virtual ~FCFileInfo() = default;
     FCFileInfo() = delete;
@@ -124,4 +123,4 @@ public:
     FCFileInfo(FCFileInfo &&) = default;
     FCFileInfo &operator=(FCFileInfo &&) = default;
 };
-#endif // SRC_FCFILEINFO_HPP_
+#endif// SRC_FCFILEINFO_HPP_
