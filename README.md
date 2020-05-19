@@ -6,7 +6,7 @@ A tool for:
 	- comparing content of folders, filesystems.  
 
 # dev hints
-* run build in docker
+* run build in docker locally
 ```shell
 git submodule update --init --recursive
 docker build --network=host -t build_filcompare .
@@ -31,5 +31,9 @@ valgrind --leak-check=full --show-leak-kinds=all ./build/src/filcompare
 ```
 sudo apt-get install libgtest-dev cmake libcap-dev libacl1-dev gcc clang zlib1g-dev libsqlite3-dev 
 git submodule update --init --recursive
-
 ``` 
+* clang local build
+```
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
+```
