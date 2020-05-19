@@ -1,5 +1,6 @@
 #include <iostream>
 #include "FCFileInfo.hpp"
+#include "FCSqliteHandle.hpp"
 
 int main()
 {
