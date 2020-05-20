@@ -17,7 +17,7 @@
 #include "Handle.hpp"
 
 
-class FCSqliteHandleTraits : HandleTraits<sqlite3 *>
+class FCSqliteHandleTraits : public HandleTraits<sqlite3 *>
 {
   public:
     static void Close(Type value) noexcept

@@ -1,18 +1,9 @@
 #include <iostream>
 #include "FCFileInfo.hpp"
-#include "Handle.hpp"
+#include "FCSqliteHandle.hpp"
 #include <sqlite3.h>
 
 
-class FCSqliteHandleTraits : HandleTraits<sqlite3 *>
-{
-  public:
-    static void Close(Type value) noexcept
-    {
-        assert(SQLITE_OK == sqlite3_close(value));
-    }
-};
-using FCSqliteHandle = Handle<FCSqliteHandleTraits>;
 
 int main()
 {
