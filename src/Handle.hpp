@@ -30,17 +30,24 @@ class HandleTraits
 template<typename Traits>
 class Handle
 {
+    using Type = decltype(Traits::Invalid());
+    Type mValue;
 
+    void Close() noexcept
+    {
+        if (*this) {
+            Traits::Close(mValue);
+        }
+    }
 
   public:
-    using Type = decltype(Traits::Invalid());
-    Type m_value;
     Handle(Handle const &) = delete;
     Handle &operator=(Handle const &) = delete;
-    explicit Handle(Type value = Traits::Invalid()) noexcept : m_value(value)
+
+    explicit Handle(Type value = Traits::Invalid()) noexcept : mValue(value)
     {}
 
-    Handle(Handle &&other) noexcept : m_value(other.Detach())
+    Handle(Handle &&other) noexcept : mValue(other.Detach())
     {}
 
     Handle &operator=(Handle &&other) noexcept
@@ -48,6 +55,7 @@ class Handle
         if (this != &other) {
             Reset(other.Detach());
         }
+
         return *this;
     }
 
@@ -58,51 +66,45 @@ class Handle
 
     explicit operator bool() const noexcept
     {
-        return m_value != Traits::Invalid();
+        return mValue != Traits::Invalid();
     }
 
     Type Get() const noexcept
     {
-        return m_value;
+        return mValue;
     }
 
     Type *Set() noexcept
     {
         assert(!*this);
-        return &m_value;
+        return &mValue;
     }
 
     Type Detach() noexcept
     {
-        Type value = m_value;
-        m_value = Traits::Invalid();
+        Type value = mValue;
+        mValue = Traits::Invalid();
         return value;
     }
 
     bool Reset(Type value = Traits::Invalid()) noexcept
     {
-        if (m_value != value) {
+        if (mValue != value) {
             Close();
-            m_value = value;
+            mValue = value;
         }
+
         return static_cast<bool>(*this);
     }
 
     void Swap(Handle<Traits> &other) noexcept
     {
-        Type temp = m_value;
-        m_value = other.m_value;
-        other.m_value = temp;
-    }
-
-  private:
-    void Close() noexcept
-    {
-        if (*this) {
-            Traits::Close(m_value);
-        }
+        Type temp = mValue;
+        mValue = other.mValue;
+        other.mValue = temp;
     }
 };
+
 
 template<typename Traits>
 void swap(Handle<Traits> &left, Handle<Traits> &right) noexcept
