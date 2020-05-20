@@ -14,7 +14,7 @@
  */
 
 #include <assert.h>
-
+#include <utility> //for swap
 template<typename T>
 class HandleTraits
 {

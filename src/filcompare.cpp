@@ -1,8 +1,7 @@
+#include <sqlite3.h>
 #include <iostream>
 #include "FCFileInfo.hpp"
 #include "FCSqliteHandle.hpp"
-#include <sqlite3.h>
-
 
 
 int main()
