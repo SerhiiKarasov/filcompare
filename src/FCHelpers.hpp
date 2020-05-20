@@ -20,5 +20,5 @@ namespace FCHelpers {
 uint64_t getProcessId();
 std::string makeUniqueMountPointName(const std::string &deviceName);
 
-}// namespace FCHelpers
-#endif// SRC_FCHELPERS_HPP_
+}  // namespace FCHelpers
+#endif  // SRC_FCHELPERS_HPP_
