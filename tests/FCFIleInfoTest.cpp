@@ -13,7 +13,7 @@ const uint32_t testFileOwnerGroup = 20;
 
 class FCFileInfoTest : public ::testing::Test
 {
-protected:
+  protected:
     FCFileInfoTest()
     {
         // set-up work for each test here.
@@ -38,14 +38,14 @@ TEST_F(FCFileInfoTest, check_factory_not_from_fs)
 {
 
     FCFileInfo fileEntry = FCFileInfo::FCFileInfoFactory::constructFCFileInfo(testFilePath,
-                                                                              testFileAcls,
-                                                                              testFileCaps,
-                                                                              testFileSize,
-                                                                              testFileCrc,
-                                                                              testFilePerms,
-                                                                              testFileType,
-                                                                              testFileOwner,
-                                                                              testFileOwnerGroup);
+        testFileAcls,
+        testFileCaps,
+        testFileSize,
+        testFileCrc,
+        testFilePerms,
+        testFileType,
+        testFileOwner,
+        testFileOwnerGroup);
     ASSERT_EQ(fileEntry.getFilePath(), testFilePath);
     ASSERT_EQ(fileEntry.getFileAcls(), testFileAcls);
     ASSERT_EQ(fileEntry.getFileCaps(), testFileCaps);

@@ -20,10 +20,10 @@ class FCMount
     explicit FCMount(const std::string &what);
     FCMount() = delete;
     virtual ~FCMount();
-    FCMount(const FCMount &other) = delete;// copy constructor
-    FCMount(FCMount &&other) = delete;// move constructor
-    FCMount &operator=(const FCMount &other) = delete;// copy assignment
-    FCMount &operator=(FCMount &&other) = delete;// move assignment
+    FCMount(const FCMount &other) = delete;             // copy constructor
+    FCMount(FCMount &&other) = delete;                  // move constructor
+    FCMount &operator=(const FCMount &other) = delete;  // copy assignment
+    FCMount &operator=(FCMount &&other) = delete;       // move assignment
   private:
     bool mountFS(const std::string &what, const std::string &where);
     bool umountFS(const std::string &where);
@@ -31,4 +31,4 @@ class FCMount
     std::string mountedDevice;
     std::string mountPoint;
 };
-#endif// SRC_FCMOUNT_HPP_
+#endif  // SRC_FCMOUNT_HPP_

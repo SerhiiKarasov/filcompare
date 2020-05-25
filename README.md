@@ -37,3 +37,7 @@ git submodule update --init --recursive
 export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 ```
+* clang format
+```
+clang-format -i --style=file src/*pp tests/*pp
+```

@@ -14,7 +14,7 @@
  */
 
 #include <assert.h>
-#include <utility> //for swap
+#include <utility>  //for swap
 template<typename T>
 class HandleTraits
 {
@@ -122,4 +122,4 @@ bool operator!=(Handle<Traits> const &left, Handle<Traits> const &right) noexcep
 {
     return !(left == right);
 }
-#endif// SRC_HANDLE_HPP_
+#endif  // SRC_HANDLE_HPP_

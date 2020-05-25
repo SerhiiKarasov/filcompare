@@ -16,8 +16,8 @@
 
 #include <string>
 #include <ostream>
-#include <functional>//for std::hash
-#include <tuple>//for tuple
+#include <functional>  //for std::hash
+#include <tuple>       //for tuple
 
 enum class FCFileType : char {
     REG_FILE = 'r',
@@ -123,4 +123,4 @@ class FCFileInfo
     FCFileInfo(FCFileInfo &&) = default;
     FCFileInfo &operator=(FCFileInfo &&) = default;
 };
-#endif// SRC_FCFILEINFO_HPP_
+#endif  // SRC_FCFILEINFO_HPP_
