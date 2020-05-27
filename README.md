@@ -19,6 +19,11 @@ docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare clang-
 ```shell
 cppcheck --force --include=/usr/include --enable=all src/
 ```
+* run flint++
+```
+git@github.com:JossWhittle/FlintPlusPlus.git
+ ../FlintPlusPlus/bin/deb64/flint++ -r src/*cpp -v
+```
 * run cpplint check
 ```shell
 (python3 -m) cpplint --filter=-whitespace,-readability,-legal *pp
