@@ -18,6 +18,7 @@
 #include <ostream>
 #include <functional>  //for std::hash
 #include <tuple>       //for tuple
+#include <vector>
 
 enum class FCFileType : char {
     REG_FILE = 'r',
@@ -28,7 +29,6 @@ enum class FCFileType : char {
     LINK = 'l',
     SOCKET = 's',
     ERR = '?'
-
 };
 
 inline std::ostream &operator<<(std::ostream &os, const FCFileType &type)
@@ -40,7 +40,6 @@ class FCFileInfoFactory;
 
 class FCFileInfo
 {
-
   private:
     friend class FCFileInfoFactory;
     friend std ::ostream &operator<<(std ::ostream &output, const FCFileInfo &f);
@@ -89,6 +88,7 @@ class FCFileInfo
     auto reflect() const;
 
   public:
+    using FCFiles = std::vector<FCFileInfo>;
     class FCFileInfoFactory
     {
       public:
@@ -102,6 +102,15 @@ class FCFileInfo
             const FCFileType mFileType,
             const uint32_t mFileOwner,
             const uint32_t mFileOwnerGroup);
+        static FCFileInfo constructFCFileInfo(const std::string &mFilePath,
+            const std::string &mFileAcls,
+            const std::string &mFileCaps,
+            const uint64_t mFileSize,
+            const uint64_t mFileCrc,
+            const uint32_t mFilePerms,
+            const char mFileType,
+            const uint32_t mFileOwner,
+            const uint32_t mFileOwnerGroup);
     };
     virtual ~FCFileInfo() = default;
     FCFileInfo() = delete;
@@ -110,6 +119,7 @@ class FCFileInfo
     uint64_t getFileSize() const noexcept;
     uint32_t getFilePerms() const noexcept;
     FCFileType getFileType() const noexcept;
+    char getFileTypeChar() const noexcept;
     uint32_t getFileOwner() const noexcept;
     uint32_t getFileOwnerGroup() const noexcept;
     std::string getFilePath() const noexcept;
@@ -123,4 +133,13 @@ class FCFileInfo
     FCFileInfo(FCFileInfo &&) = default;
     FCFileInfo &operator=(FCFileInfo &&) = default;
 };
+
+template<typename E>
+constexpr auto to_integral_type(E e) -> typename std::underlying_type<E>::type
+{
+    return static_cast<typename std::underlying_type<E>::type>(e);
+}
+
+
+
 #endif  // SRC_FCFILEINFO_HPP_

@@ -153,7 +153,7 @@ class Backup
 
     bool Step(int const pages = -1)
     {
-        int const result = sqlite3_backup_step(GetAbi(), pages);
+        const auto result = sqlite3_backup_step(GetAbi(), pages);
         if (result == SQLITE_OK) return true;
         if (result == SQLITE_DONE) return false;
 
@@ -389,7 +389,8 @@ inline RowIterator begin(FCSqliteStatement const &statement) noexcept
 {
     return RowIterator(statement);
 }
-inline RowIterator end(FCSqliteStatement const &statement) noexcept
+
+inline RowIterator end(FCSqliteStatement const &) noexcept
 {
     return RowIterator();
 }

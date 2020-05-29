@@ -7,10 +7,13 @@ add_library(${PROJECT_NAME}_lib
             FCFileInfoHelpers.cpp
             FCMount.cpp
             FCHelpers.cpp
+            FCSqliteIO.cpp
             FCFileInfo.hpp
             FCFileInfoHelpers.hpp
             FCMount.hpp
-            FCHelpers.hpp)
+            FCHelpers.hpp
+            FCSqliteIO.hpp
+            FCSqliteLib.hpp)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   target_compile_options(${PROJECT_NAME}_lib PRIVATE -Werror -Wall -Wextra)
