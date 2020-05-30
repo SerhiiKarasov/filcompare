@@ -15,6 +15,31 @@
 #include "FCFileInfoHelpers.hpp"
 #include "FCFileInfo.hpp"
 
+
+static FCFileType convertCharToType(const char type)
+{
+    switch (type) {
+    case 'r':
+        return FCFileType::REG_FILE;
+    case 'd':
+        return FCFileType::DIR;
+    case 'c':
+        return FCFileType::CHAR_DEVICE;
+    case 'b':
+        return FCFileType::BLOCK_DEVICE;
+    case 'f':
+        return FCFileType::FIFO;
+    case 'l':
+        return FCFileType::LINK;
+    case 's':
+        return FCFileType::SOCKET;
+    case '?':
+        return FCFileType::ERR;
+    default:
+        throw("failed to convert char to FCFileType");
+    }
+}
+
 std::string FCFileInfo::getFilePath() const noexcept
 {
     return filePath;
@@ -86,12 +111,14 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::s
     if (!isReadCapsOk) {
         throw std::runtime_error("Failed to read caps for file.");
     }
+
     FCFileType fileType{ FCFileType::ERR };
     bool isReadFileTypeOk{ false };
     std::tie(isReadFileTypeOk, fileType) = FCFileInfoHelpers::readFileType(fileStat, fileName);
     if (!isReadFileTypeOk) {
         throw std::runtime_error("Failed to read type for file.");
     }
+
     uint64_t fileCrc{ 0 };
     bool isReadFileCrcOk{ false };
     std::tie(isReadFileCrcOk, fileCrc) = FCFileInfoHelpers::readCrc(fileName);
@@ -128,6 +155,28 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string 
         mFileCrc,
         mFilePerms,
         mFileType,
+        mFileOwner,
+        mFileOwnerGroup };
+}
+
+
+FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &mFilePath,
+    const std::string &mFileAcls,
+    const std::string &mFileCaps,
+    const uint64_t mFileSize,
+    const uint64_t mFileCrc,
+    const uint32_t mFilePerms,
+    const char mFileType,
+    const uint32_t mFileOwner,
+    const uint32_t mFileOwnerGroup)
+{
+    return FCFileInfo{ mFilePath,
+        mFileAcls,
+        mFileCaps,
+        mFileSize,
+        mFileCrc,
+        mFilePerms,
+        convertCharToType(mFileType),
         mFileOwner,
         mFileOwnerGroup };
 }
@@ -190,4 +239,9 @@ bool operator>=(const FCFileInfo &a, const FCFileInfo &b)
 bool operator!=(const FCFileInfo &a, const FCFileInfo &b)
 {
     return !(a == b);
+}
+
+char FCFileInfo::getFileTypeChar() const noexcept
+{
+    return to_integral_type(getFileType());
 }

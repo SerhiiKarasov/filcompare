@@ -40,7 +40,7 @@ std::pair<bool, uint64_t> FCFileInfoHelpers::readCrc(const std::string &mFile) n
             throw std::runtime_error("Failed to open file.");
         }
     } catch (std::exception &e) {
-        std::cout << "Exception was caught during calculating of crc for file: " << mFile << ". Message: " << e.what() << '\n';
+        std::cerr << "Exception was caught during calculating of crc for file: " << mFile << ". Message: " << e.what() << '\n';
         result = false;
     } catch (...) {
         std::cerr << "Caught an unknown exception during calculation crc for file: " << mFile << std::endl;
@@ -65,7 +65,7 @@ std::pair<bool, std::string> FCFileInfoHelpers::readAcls(const std::string &mFil
         acl_free(fileAcl);
         aclstring.erase(std::remove_if(aclstring.begin(), aclstring.end(), ::isspace), aclstring.end());
     } catch (std::exception &e) {
-        std::cout << "Exception was caught during reading acls for file: " << mFile << ". Message: " << e.what() << '\n';
+        std::cerr << "Exception was caught during reading acls for file: " << mFile << ". Message: " << e.what() << '\n';
         result = false;
     } catch (...) {
         std::cerr << "Caught an unknown exception during reading acls for file: " << mFile << std::endl;
@@ -85,13 +85,13 @@ std::pair<bool, std::string> FCFileInfoHelpers::readCaps(const std::string &mFil
             const char *txt_caps = cap_to_text(fileCaps, nullptr);
             cap_free(fileCaps);
             if (!txt_caps) {
-                std::cout << "Problem while running cap_to_text()." << mFile << std::endl;
+                std::cerr << "Problem while running cap_to_text()." << mFile << std::endl;
                 result = false;
             }
             CAPS = std::string(txt_caps);
         }
     } catch (std::exception &e) {
-        std::cout << "Exception was caught during reading caps for file: " << mFile << ". Message: " << e.what() << '\n';
+        std::cerr << "Exception was caught during reading caps for file: " << mFile << ". Message: " << e.what() << '\n';
         result = false;
     } catch (...) {
         std::cerr << "Caught an unknown exception during reading of caps for file: " << mFile << std::endl;
@@ -107,7 +107,7 @@ struct stat FCFileInfoHelpers::readFileStat(const std::string &mFile) noexcept
     };
     //lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
     if (-1 == lstat(mFile.c_str(), &fileattrib)) {
-        std::cout << "Problem while running stat() on " << mFile << std::endl;
+        std::cerr << "Problem while running stat() on " << mFile << std::endl;
     }
     return fileattrib;
 }
@@ -156,11 +156,11 @@ std::pair<bool, FCFileType> FCFileInfoHelpers::readFileType(const struct stat &m
         }
 
         if (FCFileType::ERR == fileType) {
-            std::cout << "Problem while running checking file type on " << mFileName << std::endl;
+            std::cerr << "Problem while running checking file type on " << mFileName << std::endl;
             result = false;
         }
     } catch (std::exception &e) {
-        std::cout << "Exception was caught during reading file type for file: " << mFileName << ". Message: " << e.what() << '\n';
+        std::cerr << "Exception was caught during reading file type for file: " << mFileName << ". Message: " << e.what() << '\n';
         result = false;
     } catch (...) {
         std::cerr << "Caught an unknown exception during reading of file type for file: " << mFileName << std::endl;
@@ -193,7 +193,7 @@ bool FCFileInfoHelpers::isBlockDev(const std::string &filename) noexcept
             break;
         }
     } catch (std::exception &e) {
-        std::cout << "Exception was caught in isBlockDev for file: " << filename << ". Message: " << e.what() << '\n';
+        std::cerr << "Exception was caught in isBlockDev for file: " << filename << ". Message: " << e.what() << '\n';
         exit(-1);
     } catch (...) {
         std::cerr << "Caught an unknown exception in isBlockDev for file: " << filename << std::endl;
