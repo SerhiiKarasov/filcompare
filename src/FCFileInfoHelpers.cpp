@@ -1,5 +1,5 @@
 /**
- * @file FCFileInfoHelpers.hpp
+ * @file FCFileInfoHelpers.cpp
  *
  * @brief a set of functions to get info on files from filesystem(calculate crc, get size, etc)
  *

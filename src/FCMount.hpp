@@ -2,7 +2,7 @@
 #define SRC_FCMOUNT_HPP_
 
 /**
- * @file FCMount.cpp
+ * @file FCMount.hpp
  *
  * @brief a class to handle mounting of filesystems, images
  *

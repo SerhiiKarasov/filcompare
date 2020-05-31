@@ -2,7 +2,7 @@
 #define SRC_FCSQLITELIB_HPP_
 
 /**
- * @file FCSqliteConnectionHandle.cpp
+ * @file FCSqliteLib.hpp
  *
  * @brief a handle class for sqlite resources
  *

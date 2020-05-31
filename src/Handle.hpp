@@ -2,7 +2,7 @@
 #define SRC_HANDLE_HPP_
 
 /**
- * @file Handle.cpp
+ * @file Handle.hpp
  *
  * @brief a class to handle resources
  *

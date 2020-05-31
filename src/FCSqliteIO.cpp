@@ -4,6 +4,17 @@
 #include <iostream>
 #include <sstream>
 
+/**
+ * @file FCSqliteIO.cpp
+ *
+ * @brief a class to read and write sqlite db
+ *
+ * @ingroup filcomp
+  *
+ * @author Serhii Karasov
+ * Contact: sergeyvkarasyov@gmail.com
+ *
+ */
 
 // static char const* TypeName(FCSQLITE_TYPE const type)
 // {
