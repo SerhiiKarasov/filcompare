@@ -2,9 +2,9 @@
 #define SRC_FCSQLITEIO_HPP_
 
 /**
- * @file FCSqliteConnectionHandle.cpp
+ * @file FCSqliteIO.hpp
  *
- * @brief a handle class for sqlite resources
+ * @brief a class to read and write sqlite db
  *
  * @ingroup filcomp
   *
