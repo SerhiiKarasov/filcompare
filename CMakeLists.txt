@@ -1,6 +1,4 @@
-project(
-    filcompare
-    LANGUAGES CXX)
+project(filcompare LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.10)
 
 add_library(project_options INTERFACE)

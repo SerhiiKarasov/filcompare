@@ -13,7 +13,9 @@ RUN apt-get update && \
 	cppcheck  \
 	python3-pip \
 	clang-tidy && \
-	pip3 install cpplint
+	pip3 install cpplint && \
+	pip3 install cmake_format && \
+	pip3 install pyyaml
 
 WORKDIR /opt/project
 

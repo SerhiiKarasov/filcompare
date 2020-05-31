@@ -11,14 +11,13 @@
  */
 
 #include "FCFileInfoHelpers.hpp"
-#include <experimental/filesystem>
-
+#include <zlib.h>            // for crc32()
 #include <sys/stat.h>        // for struct stat
 #include <sys/acl.h>         // for acl_get_file
 #include <sys/capability.h>  // for cap_get_file()
-#include <zlib.h>            // for crc32()
 #include <fstream>           // for ifstream
 #include <iostream>          // for cerr
+#include <experimental/filesystem>
 
 std::streamsize const kBufferSize = 4096;
 

@@ -13,10 +13,11 @@
  *
  */
 
+#include "Handle.hpp"
 #include <sqlite3.h>
 #include <string>
 #include <utility>  //for swap
-#include "Handle.hpp"
+
 
 enum class FCSQLITE_TYPE {
     Integer = SQLITE_INTEGER,
