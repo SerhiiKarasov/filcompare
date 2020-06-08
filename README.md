@@ -66,3 +66,19 @@ cd build/graphviz && \
 cmake --graphviz=graph ${PRJ_ROOT} && \
 dot graph -T png -o graph.png
 ```
+* install newest cmake
+```
+wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh
+sudo apt remove cmake cmake-data
+sudo mv cmake-3.17.3-Linux-x86_64.sh /opt
+cd /opt
+sudo chmod +x cmake-3.17.3-Linux-x86_64.sh
+sudo bash ./cmake-3.17.3-Linux-x86_64.sh
+sudo ln -s /opt/cmake-3.17.3-Linux-x86_64/bin/* /usr/local/bin
+# or
+wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh
+sudo chmod +x cmake-3.17.3-Linux-x86_64.sh
+sudo mkdir /usr/bin/cmake-3.17.3
+sudo bash ./cmake-3.17.3-Linux-x86_64.sh --skip-license --prefix=/usr/bin/cmake-3.17.3
+export PATH=/usr/bin/cmake-3.17.3/bin:$PATH
+```

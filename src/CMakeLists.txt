@@ -23,6 +23,10 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
                                                        -Wno-c++98-compat-pedantic)
 endif()
 
+# sanitizer options if supported by compiler
+include(../cmake/Sanitizers.cmake)
+enable_sanitizers(project_options)
+
 target_compile_features(${PROJECT_NAME}_lib PUBLIC cxx_std_17)
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC acl cap sqlite3 ${ZLIB_LIBRARIES})
 
