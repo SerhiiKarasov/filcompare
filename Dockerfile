@@ -19,4 +19,4 @@ RUN apt-get update && \
 
 WORKDIR /opt/project
 
-CMD mkdir build && cd build && cmake .. && cmake --build . && cd tests && ctest -V
+CMD mkdir build && cd build && cmake .. && cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . && cmake --build . -- -j2 && cd tests && ctest -V
