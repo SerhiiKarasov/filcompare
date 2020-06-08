@@ -59,3 +59,10 @@ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
 ```
 cmake .. && cmake --build . -- -j2
 ```
+* how to generate dependency graph via graphviz
+```
+mkdir build/graphviz && \
+cd build/graphviz && \
+cmake --graphviz=graph ${PRJ_ROOT} && \
+dot graph -T png -o graph.png
+```

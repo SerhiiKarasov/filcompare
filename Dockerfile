@@ -7,9 +7,9 @@ RUN apt-get update && \
 	libtool pkg-config \
 	libsqlite3-dev \
 	zlib1g-dev \
-    graphviz \
-    libacl1-dev \
-    libcap-dev \
+	graphviz \
+	libacl1-dev \
+	libcap-dev \
 	cppcheck  \
 	python3-pip \
 	clang-tidy && \
@@ -19,4 +19,15 @@ RUN apt-get update && \
 
 WORKDIR /opt/project
 
-CMD mkdir build && cd build && cmake .. && cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . && cmake --build . -- -j2 && cd tests && ctest -V
+CMD PRJ_ROOT=${PWD} && \
+	mkdir build && cd build && \
+	cmake .. && \
+	cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . && \
+	cmake --build . -- -j2 && \
+	cd tests && \
+	ctest -V && \ 
+	cd ${PRJ_ROOT} && \
+	mkdir build/graphviz && \
+	cd build/graphviz && \
+	cmake --graphviz=graph ${PRJ_ROOT} && \
+	dot graph -T png -o graph.png
