@@ -50,25 +50,25 @@ class FCFileInfo
     friend bool operator>=(const FCFileInfo &a, const FCFileInfo &b);
     friend bool operator!=(const FCFileInfo &a, const FCFileInfo &b);
 
-    FCFileInfo(const std::string &mFilePath,
-        const std::string &mFileAcls,
-        const std::string &mFileCaps,
-        const uint64_t mFileSize,
-        const uint64_t mFileCrc,
-        const uint32_t mFilePerms,
-        const FCFileType mFileType,
-        const uint32_t mFileOwner,
-        const uint32_t mFileOwnerGroup) : fileSize{ mFileSize },
-                                          fileCrc{ mFileCrc },
-                                          filePerms{ mFilePerms },
-                                          fileType{ mFileType },
-                                          fileOwner{ mFileOwner },
-                                          fileOwnerGroup{ mFileOwnerGroup },
-                                          filePath{ mFilePath },
-                                          fileAcls{ mFileAcls },
-                                          fileCaps{ mFileCaps },
-                                          filePathHash{ std::hash<std::string>{}(mFilePath) },
-                                          fileCrcHash{ std::hash<std::uint64_t>{}(mFileCrc) }
+    FCFileInfo(const std::string &t_FilePath,
+        const std::string &t_FileAcls,
+        const std::string &t_FileCaps,
+        const uint64_t t_FileSize,
+        const uint64_t t_FileCrc,
+        const uint32_t t_FilePerms,
+        const FCFileType t_FileType,
+        const uint32_t t_FileOwner,
+        const uint32_t t_FileOwnerGroup) : fileSize{ t_FileSize },
+                                           fileCrc{ t_FileCrc },
+                                           filePerms{ t_FilePerms },
+                                           fileType{ t_FileType },
+                                           fileOwner{ t_FileOwner },
+                                           fileOwnerGroup{ t_FileOwnerGroup },
+                                           filePath{ t_FilePath },
+                                           fileAcls{ t_FileAcls },
+                                           fileCaps{ t_FileCaps },
+                                           filePathHash{ std::hash<std::string>{}(t_FilePath) },
+                                           fileCrcHash{ std::hash<std::uint64_t>{}(t_FileCrc) }
     {
     }
 
@@ -84,7 +84,7 @@ class FCFileInfo
     std::hash<std ::string>::result_type filePathHash;
     std::hash<std ::string>::result_type fileCrcHash;
 
-    //implementation of reflect solution to iterate over class members
+    //implementation of reflect solution to iterate over class t_embers
     auto reflect() const;
 
   public:
@@ -93,24 +93,24 @@ class FCFileInfo
     {
       public:
         static FCFileInfo constructFCFileInfoFromFs(const std::string &fileName);
-        static FCFileInfo constructFCFileInfo(const std::string &mFilePath,
-            const std::string &mFileAcls,
-            const std::string &mFileCaps,
-            const uint64_t mFileSize,
-            const uint64_t mFileCrc,
-            const uint32_t mFilePerms,
-            const FCFileType mFileType,
-            const uint32_t mFileOwner,
-            const uint32_t mFileOwnerGroup);
-        static FCFileInfo constructFCFileInfo(const std::string &mFilePath,
-            const std::string &mFileAcls,
-            const std::string &mFileCaps,
-            const uint64_t mFileSize,
-            const uint64_t mFileCrc,
-            const uint32_t mFilePerms,
-            const char mFileType,
-            const uint32_t mFileOwner,
-            const uint32_t mFileOwnerGroup);
+        static FCFileInfo constructFCFileInfo(const std::string &t_FilePath,
+            const std::string &t_FileAcls,
+            const std::string &t_FileCaps,
+            const uint64_t t_FileSize,
+            const uint64_t t_FileCrc,
+            const uint32_t t_FilePerms,
+            const FCFileType t_FileType,
+            const uint32_t t_FileOwner,
+            const uint32_t t_FileOwnerGroup);
+        static FCFileInfo constructFCFileInfo(const std::string &t_FilePath,
+            const std::string &t_FileAcls,
+            const std::string &t_FileCaps,
+            const uint64_t t_FileSize,
+            const uint64_t t_FileCrc,
+            const uint32_t t_FilePerms,
+            const char t_FileType,
+            const uint32_t t_FileOwner,
+            const uint32_t t_FileOwnerGroup);
     };
     virtual ~FCFileInfo() = default;
     FCFileInfo() = delete;
@@ -139,7 +139,6 @@ constexpr auto to_integral_type(E e) -> typename std::underlying_type<E>::type
 {
     return static_cast<typename std::underlying_type<E>::type>(e);
 }
-
 
 
 #endif  // SRC_FCFILEINFO_HPP_
