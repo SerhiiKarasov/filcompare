@@ -25,6 +25,5 @@ class FCSqliteIO
     FCFileInfo::FCFiles ReadFromDb(const std::string& db_name) const;
     bool WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles& files) const;
     static void SaveToBackupToDisk(FCSqliteConnection const& source, char const* const filename);
-
 };
 #endif  //  SRC_FCSQLITEIO_HPP_

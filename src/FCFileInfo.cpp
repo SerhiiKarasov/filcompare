@@ -138,47 +138,47 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::s
     return fileInfo;
 }
 
-FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &mFilePath,
-    const std::string &mFileAcls,
-    const std::string &mFileCaps,
-    const uint64_t mFileSize,
-    const uint64_t mFileCrc,
-    const uint32_t mFilePerms,
-    const FCFileType mFileType,
-    const uint32_t mFileOwner,
-    const uint32_t mFileOwnerGroup)
+FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &t_FilePath,
+    const std::string &t_FileAcls,
+    const std::string &t_FileCaps,
+    const uint64_t t_FileSize,
+    const uint64_t t_FileCrc,
+    const uint32_t t_FilePerms,
+    const FCFileType t_FileType,
+    const uint32_t t_FileOwner,
+    const uint32_t t_FileOwnerGroup)
 {
-    return FCFileInfo{ mFilePath,
-        mFileAcls,
-        mFileCaps,
-        mFileSize,
-        mFileCrc,
-        mFilePerms,
-        mFileType,
-        mFileOwner,
-        mFileOwnerGroup };
+    return FCFileInfo{ t_FilePath,
+        t_FileAcls,
+        t_FileCaps,
+        t_FileSize,
+        t_FileCrc,
+        t_FilePerms,
+        t_FileType,
+        t_FileOwner,
+        t_FileOwnerGroup };
 }
 
 
-FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &mFilePath,
-    const std::string &mFileAcls,
-    const std::string &mFileCaps,
-    const uint64_t mFileSize,
-    const uint64_t mFileCrc,
-    const uint32_t mFilePerms,
-    const char mFileType,
-    const uint32_t mFileOwner,
-    const uint32_t mFileOwnerGroup)
+FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfo(const std::string &t_FilePath,
+    const std::string &t_FileAcls,
+    const std::string &t_FileCaps,
+    const uint64_t t_FileSize,
+    const uint64_t t_FileCrc,
+    const uint32_t t_FilePerms,
+    const char t_FileType,
+    const uint32_t t_FileOwner,
+    const uint32_t t_FileOwnerGroup)
 {
-    return FCFileInfo{ mFilePath,
-        mFileAcls,
-        mFileCaps,
-        mFileSize,
-        mFileCrc,
-        mFilePerms,
-        convertCharToType(mFileType),
-        mFileOwner,
-        mFileOwnerGroup };
+    return FCFileInfo{ t_FilePath,
+        t_FileAcls,
+        t_FileCaps,
+        t_FileSize,
+        t_FileCrc,
+        t_FilePerms,
+        convertCharToType(t_FileType),
+        t_FileOwner,
+        t_FileOwnerGroup };
 }
 
 bool operator==(const FCFileInfo &lhs, const FCFileInfo &rhs)
@@ -218,8 +218,8 @@ auto tuple_for_each(const TupleType &tpl, const Functor &ifunctor) -> void
 
 std::ostream &operator<<(std::ostream &output, const FCFileInfo &f)
 {
-    tuple_for_each(f.reflect(), [&output](const auto &m) {
-        output << m << " ";
+    tuple_for_each(f.reflect(), [&output](const auto &field) {
+        output << field << " ";
     });
     return output;
 }

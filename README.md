@@ -51,4 +51,3 @@ clang-format -i --style=file src/*pp tests/*pp
 pip install cmake_format pyyaml
 python3 -m cmake_format -c .cmake-format.yaml -i CMakeLists.txt tests/CMakeLists.txt src/CMakeLists.txt submodules/CMakeLists.txt
 ```
-()
