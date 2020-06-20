@@ -314,25 +314,25 @@ class FCSqliteStatement : public Reader<FCSqliteStatement>
 
     void Bind(const int index, std::string const &value) const
     {
-        Bind(index, value.c_str(), value.size());
+        Bind(index, value.c_str(), static_cast<int>(value.size()));
     }
 
     void Bind(const int index, std::wstring const &value) const
     {
-        Bind(index, value.c_str(), value.size() * sizeof(wchar_t));
+        Bind(index, value.c_str(), static_cast<int>(value.size() * sizeof(wchar_t)));
     }
 
     //rvalue
     void Bind(const int index, std::string const &&value) const
     {
-        if (SQLITE_OK != sqlite3_bind_text(GetAbi(), index, value.c_str(), value.size(), SQLITE_TRANSIENT)) {
+        if (SQLITE_OK != sqlite3_bind_text(GetAbi(), index, value.c_str(), static_cast<int>(value.size()), SQLITE_TRANSIENT)) {
             ThrowLastError();
         }
     }
 
     void Bind(const int index, std::wstring const &&value) const
     {
-        if (SQLITE_OK != sqlite3_bind_text16(GetAbi(), index, value.c_str(), value.size() * sizeof(wchar_t), SQLITE_TRANSIENT)) {
+        if (SQLITE_OK != sqlite3_bind_text16(GetAbi(), index, value.c_str(), static_cast<int>(value.size() * sizeof(wchar_t)), SQLITE_TRANSIENT)) {
             ThrowLastError();
         }
     }

@@ -41,3 +41,4 @@ target_link_libraries(${PROJECT_NAME}_lib PRIVATE "stdc++fs")
 add_executable(${PROJECT_NAME} filcompare.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE project_options)
