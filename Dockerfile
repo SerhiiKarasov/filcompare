@@ -29,7 +29,7 @@ WORKDIR /opt/project
 CMD PRJ_ROOT=${PWD} && \
 	mkdir build && cd build && \
 	cmake .. && \
-	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  -DCMAKE_VERBOSE_MAKEFILE=TRUE -DENABLE_SANITIZER_ADDRESS=TRUE . && \
+	cmake -D ENABLE_TEST_COVERAGE=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  -DCMAKE_VERBOSE_MAKEFILE=TRUE -DENABLE_SANITIZER_ADDRESS=TRUE . && \
 	cmake --build . -- -j2 && \
 	cd tests && \
 	ctest -V && \ 
