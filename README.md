@@ -1,6 +1,6 @@
 # [filcompare](https://sergeykarasyov.github.io/filcompare/)
 [![Actions Status](https://github.com/SergeyKarasyov/filcompare/workflows/filcompare/badge.svg)](https://github.com/SergeyKarasyov/filcompare/actions)
-
+[![codecov](https://codecov.io/gh/SergeyKarasyov/filcompare/branch/master/graph/badge.svg)](https://codecov.io/gh/SergeyKarasyov/filcompare)
 A tool for:  
 	- dumping info on filesystem or folder content.  
 	- comparing content of folders, filesystems.  
