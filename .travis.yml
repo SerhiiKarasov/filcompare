@@ -11,6 +11,7 @@ addons:
       - libcap-dev
       - libsqlite3-dev
       - zlib1g-dev
+      - lcov
   coverity_scan:
     project:
       name: "filcompare"
@@ -33,10 +34,19 @@ matrix:
   
 before_install:
   - if [ "${GCC_VER}" != "" ]; then export CXX="g++-$GCC_VER" CC="gcc-$GCC_VER" GCOV="gcov-$GCC_VER" ; fi
-  - pip install --user cpp-coveralls
+  - pip install --user cpp-coveralls coverage
 
 script: 
   - cmake -D ENABLE_COVERAGE:BOOL=TRUE -D CMAKE_BUILD_TYPE:STRING=Debug $CMAKE_OPTIONS . 
   - cmake --build . -- -j2
   - if [ "${BUILD_ONLY}" != "1" ]; then ctest; fi
-  - if [ "${COVERAGE}" = "1" ]; then bash <(curl -s https://raw.githubusercontent.com/codecov/codecov-bash/master/codecov) -x $GCOV -a "-s `pwd`" ; fi
+  - if [ "${COVERAGE}" = "1" ]; then bash <(curl -s https://codecov.io/bash) -x $GCOV -a "-s `pwd`" ; fi
+
+
+  after_success:
+    # Create lcov report
+    - lcov --capture --directory . --output-file coverage.info
+    - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter system-files
+    - lcov --list coverage.info # debug info
+    # Uploading report to CodeCov
+    - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
