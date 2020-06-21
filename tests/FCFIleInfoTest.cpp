@@ -56,3 +56,27 @@ TEST_F(FCFileInfoTest, check_factory_not_from_fs)
     ASSERT_EQ(fileEntry.getFileOwner(), testFileOwner);
     ASSERT_EQ(fileEntry.getFileOwnerGroup(), testFileOwnerGroup);
 }
+
+
+TEST_F(FCFileInfoTest, check_factory_not_from_fs_not_eq)
+{
+
+    FCFileInfo fileEntry = FCFileInfo::FCFileInfoFactory::constructFCFileInfo(testFilePath + "1",
+        testFileAcls,
+        testFileCaps,
+        testFileSize,
+        testFileCrc,
+        testFilePerms,
+        testFileType,
+        testFileOwner,
+        testFileOwnerGroup);
+    ASSERT_NE(fileEntry.getFilePath(), testFilePath);
+    ASSERT_EQ(fileEntry.getFileAcls(), testFileAcls);
+    ASSERT_EQ(fileEntry.getFileCaps(), testFileCaps);
+    ASSERT_EQ(fileEntry.getFileSize(), testFileSize);
+    ASSERT_EQ(fileEntry.getFileCrc(), testFileCrc);
+    ASSERT_EQ(fileEntry.getFilePerms(), testFilePerms);
+    ASSERT_EQ(fileEntry.getFileType(), testFileType);
+    ASSERT_EQ(fileEntry.getFileOwner(), testFileOwner);
+    ASSERT_EQ(fileEntry.getFileOwnerGroup(), testFileOwnerGroup);
+}
