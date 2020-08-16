@@ -81,8 +81,8 @@ class FCFileInfo
     std::string filePath;
     std::string fileAcls;
     std::string fileCaps;
-    std::hash<std ::string>::result_type filePathHash;
-    std::hash<std ::string>::result_type fileCrcHash;
+    std::size_t filePathHash;
+    std::size_t fileCrcHash;
 
     //implementation of reflect solution to iterate over class t_embers
     auto reflect() const;
