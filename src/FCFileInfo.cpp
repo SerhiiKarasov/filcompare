@@ -98,30 +98,22 @@ FCFileInfo FCFileInfo::FCFileInfoFactory::constructFCFileInfoFromFs(const std::s
     uint64_t fileSize = FCFileInfoHelpers::readFileSize(fileStat);
     uint32_t filePerms = FCFileInfoHelpers::readFilePerms(fileStat);
 
-    std::string fileAcls;
-    bool isReadAclsOk{ false };
-    std::tie(isReadAclsOk, fileAcls) = FCFileInfoHelpers::readAcls(fileName);
+    const auto [isReadAclsOk, fileAcls] = FCFileInfoHelpers::readAcls(fileName);
     if (!isReadAclsOk) {
         throw std::runtime_error("Failed to read acls for file.");
     }
 
-    std::string fileCaps;
-    bool isReadCapsOk{ false };
-    std::tie(isReadCapsOk, fileCaps) = FCFileInfoHelpers::readCaps(fileName);
+    const auto [isReadCapsOk, fileCaps] = FCFileInfoHelpers::readCaps(fileName);
     if (!isReadCapsOk) {
         throw std::runtime_error("Failed to read caps for file.");
     }
 
-    FCFileType fileType{ FCFileType::ERR };
-    bool isReadFileTypeOk{ false };
-    std::tie(isReadFileTypeOk, fileType) = FCFileInfoHelpers::readFileType(fileStat, fileName);
+    const auto [isReadFileTypeOk, fileType] = FCFileInfoHelpers::readFileType(fileStat, fileName);
     if (!isReadFileTypeOk) {
         throw std::runtime_error("Failed to read type for file.");
     }
 
-    uint64_t fileCrc{ 0 };
-    bool isReadFileCrcOk{ false };
-    std::tie(isReadFileCrcOk, fileCrc) = FCFileInfoHelpers::readCrc(fileName);
+    const auto [isReadFileCrcOk, fileCrc] = FCFileInfoHelpers::readCrc(fileName);
     if (!isReadFileCrcOk) {
         throw std::runtime_error("Failed to read crc of file.");
     }
@@ -199,28 +191,12 @@ bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs)
     return lhs.fileCrcHash < rhs.fileCrcHash;
 }
 
-template<size_t Index, typename TupleType, typename Functor>
-auto tuple_at(const TupleType &tpl, const Functor &func) -> void
-{
-    const auto &val = std::get<Index>(tpl);
-    func(val);
-}
-
-template<typename TupleType, typename Functor, size_t Index = 0>
-auto tuple_for_each(const TupleType &tpl, const Functor &ifunctor) -> void
-{
-    constexpr auto tuple_size = std::tuple_size_v<TupleType>;
-    if constexpr (Index < tuple_size) {
-        tuple_at<Index>(tpl, ifunctor);
-        tuple_for_each<TupleType, Functor, Index + 1>(tpl, ifunctor);
-    }
-}
-
 std::ostream &operator<<(std::ostream &output, const FCFileInfo &f)
 {
-    tuple_for_each(f.reflect(), [&output](const auto &field) {
-        output << field << " ";
-    });
+    std::apply([&output](const auto& ... fields)
+    {
+        ((output << fields << " "), ...);
+    }, f.reflect());
     return output;
 }
 
@@ -245,3 +221,4 @@ char FCFileInfo::getFileTypeChar() const noexcept
 {
     return to_integral_type(getFileType());
 }
+
