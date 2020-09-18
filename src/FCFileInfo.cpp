@@ -16,7 +16,7 @@
 #include "FCFileInfo.hpp"
 
 
-static FCFileType convertCharToType(const char type)
+static auto convertCharToType(const char type) -> FCFileType
 {
     switch (type) {
     case 'r':
@@ -40,42 +40,42 @@ static FCFileType convertCharToType(const char type)
     }
 }
 
-std::string FCFileInfo::getFilePath() const noexcept
+auto FCFileInfo::getFilePath() const noexcept -> std::string
 {
     return filePath;
 }
-uint64_t FCFileInfo::getFileCrc() const noexcept
+auto FCFileInfo::getFileCrc() const noexcept -> uint64_t
 {
     return fileCrc;
 }
-std::string FCFileInfo::getFileAcls() const noexcept
+auto FCFileInfo::getFileAcls() const noexcept -> std::string
 {
     return fileAcls;
 }
-uint64_t FCFileInfo::getFileSize() const noexcept
+auto FCFileInfo::getFileSize() const noexcept -> uint64_t
 {
     return fileSize;
 }
-uint32_t FCFileInfo::getFilePerms() const noexcept
+auto FCFileInfo::getFilePerms() const noexcept -> uint32_t
 {
     return filePerms;
 }
-std::string FCFileInfo::getFileCaps() const noexcept
+auto FCFileInfo::getFileCaps() const noexcept -> std::string
 {
     return fileCaps;
 }
 
-FCFileType FCFileInfo::getFileType() const noexcept
+auto FCFileInfo::getFileType() const noexcept -> FCFileType
 {
     return fileType;
 }
 
-uint32_t FCFileInfo::getFileOwner() const noexcept
+auto FCFileInfo::getFileOwner() const noexcept -> uint32_t
 {
     return fileOwner;
 }
 
-uint32_t FCFileInfo::getFileOwnerGroup() const noexcept
+auto FCFileInfo::getFileOwnerGroup() const noexcept -> uint32_t
 {
     return fileOwnerGroup;
 }
@@ -221,4 +221,3 @@ char FCFileInfo::getFileTypeChar() const noexcept
 {
     return to_integral_type(getFileType());
 }
-
