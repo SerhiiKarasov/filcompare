@@ -85,7 +85,7 @@ class FCFileInfo
     std::size_t fileCrcHash;
 
     //implementation of reflect solution to iterate over class t_embers
-    auto reflect() const;
+    [[nodiscard]] auto reflect() const;
 
   public:
     using FCFiles = std::vector<FCFileInfo>;
@@ -115,16 +115,16 @@ class FCFileInfo
     virtual ~FCFileInfo() = default;
     FCFileInfo() = delete;
 
-    uint64_t getFileCrc() const noexcept;
-    uint64_t getFileSize() const noexcept;
-    uint32_t getFilePerms() const noexcept;
-    FCFileType getFileType() const noexcept;
-    char getFileTypeChar() const noexcept;
-    uint32_t getFileOwner() const noexcept;
-    uint32_t getFileOwnerGroup() const noexcept;
-    std::string getFilePath() const noexcept;
-    std::string getFileAcls() const noexcept;
-    std::string getFileCaps() const noexcept;
+    [[nodiscard]] uint64_t getFileCrc() const noexcept;
+    [[nodiscard]] uint64_t getFileSize() const noexcept;
+    [[nodiscard]] uint32_t getFilePerms() const noexcept;
+    [[nodiscard]] FCFileType getFileType() const noexcept;
+    [[nodiscard]] char getFileTypeChar() const noexcept;
+    [[nodiscard]] uint32_t getFileOwner() const noexcept;
+    [[nodiscard]] uint32_t getFileOwnerGroup() const noexcept;
+    [[nodiscard]] std::string getFilePath() const noexcept;
+    [[nodiscard]] std::string getFileAcls() const noexcept;
+    [[nodiscard]] std::string getFileCaps() const noexcept;
 
     static FCFileInfoFactory factory;
 
