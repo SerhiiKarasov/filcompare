@@ -18,6 +18,7 @@
 #include <fstream>           // for ifstream
 #include <iostream>          // for cerr
 #include <experimental/filesystem>
+#include <algorithm>
 
 std::streamsize const kBufferSize = 4096;
 
