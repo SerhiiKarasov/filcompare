@@ -1,0 +1,14 @@
+---
+runner:
+  misspell:
+    cmd: misspell -locale US $(git ls-files)
+    errorformat:
+      - "%f:%l:%c: %m"
+
+  remark:
+    cmd: remark $(git ls-files | egrep "*.md$" --color=no)
+    format: remark-lint
+
+  yamllint:
+    cmd: yamllint --format "parsable" $(git ls-files | egrep "*.yml$" --color=no)
+    error-format: yamllint
