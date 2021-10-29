@@ -1,0 +1,62 @@
+---
+name: reviewdog
+on: [push, pull_request]  # yamllint disable-line rule:truthy
+
+jobs:
+  text_lint:
+    # run reviewdog for PR only because "github-check" option is failing :(
+    # https://github.com/reviewdog/reviewdog/issues/924
+    if: github.event_name == 'pull_request'
+
+    name: reviewdog - Text lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - uses: reviewdog/action-setup@master
+        with:
+          reviewdog_version: latest
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pip install yamllint
+          npm install -g                            \
+            remark-lint                             \
+            remark-cli                              \
+            remark-preset-lint-recommended          \
+            remark-preset-lint-markdown-style-guide \
+            remark-preset-lint-consistent
+          curl -sL https://git.io/misspell | sh -s -- -b "/tmp/misspell/"
+          echo "/tmp/misspell" >> $GITHUB_PATH
+
+      - name: Set env for PR
+        if: github.event_name == 'pull_request'
+        run: echo "REWIEVDOG_REPORTER=github-pr-review" >> $GITHUB_ENV
+
+      - name: Set env for push
+        if: github.event_name != 'pull_request'
+        run: echo "REWIEVDOG_REPORTER=github-check" >> $GITHUB_ENV
+
+      - name: Run reviewdog
+        shell: bash
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          reviewdog -tee -runners=remark,yamllint,misspell -reporter=${{ env.REWIEVDOG_REPORTER }} -fail-on-error=false
+
+      - uses: reviewdog/action-languagetool@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: ${{ env.REWIEVDOG_REPORTER }}
+          level: info
