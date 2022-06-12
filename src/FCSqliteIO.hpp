@@ -16,8 +16,8 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include "FCSqliteLib.hpp"
-#include "FCFileInfo.hpp"
+#include "src/FCSqliteLib.hpp"
+#include "src/FCFileInfo.hpp"
 
 class FCSqliteIO
 {

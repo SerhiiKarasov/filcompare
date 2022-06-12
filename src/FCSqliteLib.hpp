@@ -13,7 +13,7 @@
  *
  */
 
-#include "Handle.hpp"
+#include "src/Handle.hpp"
 #include <sqlite3.h>
 #include <string>
 #include <utility>  //for swap
