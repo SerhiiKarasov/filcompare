@@ -10,7 +10,7 @@
  *
  */
 
-#include "FCFileInfoHelpers.hpp"
+#include "src/FCFileInfoHelpers.hpp"
 #include <zlib.h>            // for crc32()
 #include <sys/stat.h>        // for struct stat
 #include <sys/acl.h>         // for acl_get_file

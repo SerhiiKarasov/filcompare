@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "FCFileInfo.hpp"
-#include "FCSqliteIO.hpp"
+#include "src/FCFileInfo.hpp"
+#include "src/FCSqliteIO.hpp"
 #include <stdarg.h> /* Needed for the definition of va_list */
 
 int main()

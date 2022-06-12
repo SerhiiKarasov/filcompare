@@ -10,13 +10,13 @@
  *
  */
 
-#include "FCMount.hpp"
+#include "src/FCMount.hpp"
 #include <sstream>
 #include <iostream>
 #include <cerrno>
 #include <cstring>
-#include "FCHelpers.hpp"
-#include "FCFileInfoHelpers.hpp"
+#include "src/FCHelpers.hpp"
+#include "src/FCFileInfoHelpers.hpp"
 
 FCMount::FCMount(const std::string &what) : mountedDevice(what),
                                             mountPoint(makeUniqueMountPoint(what))
