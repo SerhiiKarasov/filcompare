@@ -48,7 +48,7 @@ jobs:
         && cd build                                                                       \
         && export CC=/usr/bin/clang                                                       \
         && export CXX=/usr/bin/clang++                                                    \
-        && cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..      \
+        && cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DOPT_ENABLE_COVERAGE:BOOL=ON ..      \
         && cmake --build . --parallel                                                     \
         "
 
@@ -63,6 +63,7 @@ jobs:
       run: |
         ctest -C ${{matrix.build_type}}
         pwd
+        ls -la ${PWD}
         which gcov
         gcov --version
         gcovr --version
