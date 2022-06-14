@@ -8,5 +8,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 add_subdirectory(src)
 add_subdirectory(tests)
 add_subdirectory(submodules)
-
+option(ENABLE_TEST_COVERAGE "ENABLE_TEST_COVERAGE" ON)
 include(cmake/StaticAnalyzers.cmake)

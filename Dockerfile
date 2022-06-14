@@ -44,6 +44,7 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -        
     liblldb-12                                                                                                  \
     python3-clang-12                                                                                            \
     python3-lldb-12                                                                                             \
+	gcovr																										\
  && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100                                    \
  && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100                              \
  && update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 100                     \
