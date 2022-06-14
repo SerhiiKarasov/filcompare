@@ -64,4 +64,12 @@ CMD PRJ_ROOT=${PWD} && \
 	mkdir build/graphviz && \
 	cd build/graphviz && \
 	cmake --graphviz=graph ${PRJ_ROOT} && \
-	dot graph -T png -o graph.png
+	dot graph -T png -o graph.png && \
+	cd ../tests  && \
+    ctest -C && \
+    pwd && \
+    ls -la ${PWD} && \
+    which gcov && \
+    gcov --version && \
+    gcovr --version && \
+    gcovr --root ../ .
