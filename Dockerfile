@@ -44,6 +44,7 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -        
     liblldb-12                                                                                                  \
     python3-clang-12                                                                                            \
     python3-lldb-12                                                                                             \
+	gcovr																										\
  && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100                                    \
  && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100                              \
  && update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 100                     \
@@ -63,4 +64,12 @@ CMD PRJ_ROOT=${PWD} && \
 	mkdir build/graphviz && \
 	cd build/graphviz && \
 	cmake --graphviz=graph ${PRJ_ROOT} && \
-	dot graph -T png -o graph.png
+	dot graph -T png -o graph.png && \
+	cd ../tests  && \
+    ctest -C && \
+    pwd && \
+    ls -la ${PWD} && \
+    which gcov && \
+    gcov --version && \
+    gcovr --version && \
+    gcovr --root ../ .

@@ -14,8 +14,16 @@ jobs:
           - gcc
         build_type:
           - Release
+        include:
+          # setup gcov variables for extra compiler versions
+          - compiler: llvm
+            gcov: "llvm-cov gcov"
+          - compiler: gcc-8
+            gcov: "gcov-8"
 
     steps:
+    - name: install gcovr
+      run: sudo apt-get -y install gcovr
     - uses: actions/checkout@v1
     - name: googletests_submodule_init
       run: git submodule update --init
@@ -40,7 +48,7 @@ jobs:
         && cd build                                                                       \
         && export CC=/usr/bin/clang                                                       \
         && export CXX=/usr/bin/clang++                                                    \
-        && cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..      \
+        && cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DOPT_ENABLE_COVERAGE:BOOL=ON ..      \
         && cmake --build . --parallel                                                     \
         "
 
