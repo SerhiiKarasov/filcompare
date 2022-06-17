@@ -1,12 +1,12 @@
 language: cpp
-dist: bionic
+dist: focal
 
 addons:
   apt:
     sources: 
       - ubuntu-toolchain-r-test
     packages:
-      - g++-7
+      - g++-9
       - libacl1-dev
       - libcap-dev
       - libsqlite3-dev
@@ -24,12 +24,15 @@ matrix:
     - os: linux
       compiler: gcc
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-        - GCC_VER="7" CPPCHECK=1 COVERAGE=1 CMAKE_OPTIONS="-D RUN_FUZZY_TESTS:BOOL=TRUE"
+        - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
+        - GCC_VER="9" CPPCHECK=1 COVERAGE=1 CMAKE_OPTIONS="-D RUN_FUZZY_TESTS:BOOL=TRUE"
     - os: linux
       compiler: clang
+      packages:
+        - clang-9
+        - libstdc++-9-dev
       env:
-        - CMAKE_OPTIONS="-D ENABLE_TEST_COVERAGE=1 -D DYNLOAD_ENABLED:BOOL=FALSE -D MULTITHREAD_SUPPORT_ENABLED:BOOL=FALSE -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D USE_STD_MAKE_SHARED:BOOL=TRUE" BUILD_ONLY=1
+        - CMAKE_OPTIONS="-D CMAKE_CXX_COMPILER="/bin/clang++-9" -D CMAKE_C_COMPILER="/bin/clang-9" ENABLE_TEST_COVERAGE=1 -D DYNLOAD_ENABLED:BOOL=FALSE -D MULTITHREAD_SUPPORT_ENABLED:BOOL=FALSE -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D USE_STD_MAKE_SHARED:BOOL=TRUE" BUILD_ONLY=1
   
 before_install:
   - if [ "${GCC_VER}" != "" ]; then export CXX="g++-$GCC_VER" CC="gcc-$GCC_VER" GCOV="gcov-$GCC_VER" ; fi

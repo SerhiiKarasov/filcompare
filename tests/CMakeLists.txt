@@ -3,7 +3,8 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(${PROJECT_NAME}_test FCFIleInfoTest.cpp)
 
-target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME}_lib gtest gtest_main)
+target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME}_lib ${PROJECT_NAME}_own_sqlite_lib
+                                                   ${PROJECT_NAME}_sqlitecpp_lib gtest_main gtest)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_test PRIVATE -Werror -Wall -Wextra)

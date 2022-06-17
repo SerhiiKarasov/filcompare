@@ -1,20 +1,18 @@
 find_package(ZLIB)
+add_subdirectory(sqlite_lib_own_implementation)
+add_subdirectory(sqlitecpp_lib)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_library(
     ${PROJECT_NAME}_lib
     FCFileInfo.cpp
     FCFileInfoHelpers.cpp
     FCMount.cpp
     FCHelpers.cpp
-    FCSqliteIO.cpp
     FCFileInfo.hpp
     FCFileInfoHelpers.hpp
     FCMount.hpp
     FCHelpers.hpp
-    FCSqliteIO.hpp
-    FCSqliteLib.hpp)
+    IFCSqliteStorage.hpp)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_lib PRIVATE -Werror -Wall -Wextra)
@@ -35,10 +33,11 @@ set_project_warnings(project_options)
 include(../cmake/StaticAnalyzers.cmake)
 
 target_compile_features(${PROJECT_NAME}_lib PUBLIC cxx_std_17)
-target_link_libraries(${PROJECT_NAME}_lib PUBLIC acl cap sqlite3 ${ZLIB_LIBRARIES})
-
+target_link_libraries(${PROJECT_NAME}_lib PUBLIC acl cap sqlite3 pthread dl ${ZLIB_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_lib PRIVATE "stdc++fs")
 add_executable(${PROJECT_NAME} filcompare.cpp)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib)
+target_include_directories(${PROJECT_NAME} PRIVATE submodules/SQLiteCpp/include/SQLiteCpp/)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib ${PROJECT_NAME}_own_sqlite_lib
+                                              ${PROJECT_NAME}_sqlitecpp_lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE project_options)
+target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp)
