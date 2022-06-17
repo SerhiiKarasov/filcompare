@@ -193,10 +193,10 @@ bool operator<(const FCFileInfo &lhs, const FCFileInfo &rhs)
 
 std::ostream &operator<<(std::ostream &output, const FCFileInfo &f)
 {
-    std::apply([&output](const auto& ... fields)
-    {
+    std::apply([&output](const auto &... fields) {
         ((output << fields << " "), ...);
-    }, f.reflect());
+    },
+        f.reflect());
     return output;
 }
 

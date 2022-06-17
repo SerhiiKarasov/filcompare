@@ -1,4 +1,4 @@
-#include "src/FCSqliteIO.hpp"
+#include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
 #include <map>
 #include <utility>
 #include <iostream>
@@ -34,29 +34,7 @@
 //     return "invalid";
 // }
 
-enum class FCDataColumns : uint32_t {
-    file = 0,
-    size = 1,
-    crc = 2,
-    perm = 3,
-    type = 4,
-    owner = 5,
-    group = 6,
-    acls = 7,
-    caps = 8
-};
 
-namespace FCDataColumnNames {
-const constexpr auto file = "name";
-const constexpr auto size = "size";
-const constexpr auto crc = "crc";
-const constexpr auto perm = "perm";
-const constexpr auto type = "type";
-const constexpr auto owner = "uid";
-const constexpr auto group = "guid";
-const constexpr auto acls = "acls";
-const constexpr auto caps = "caps";
-};  // namespace FCDataColumnNames
 
 FCFileInfo::FCFiles FCSqliteIO::ReadFromDb(const std::string& db_name) const
 {
@@ -152,12 +130,4 @@ bool FCSqliteIO::WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles
         std::cerr << "Db write failed. Message: " << ex.Message << ". Error : " << ex.Result << std::endl;
     }
     return true;
-}
-
-
-void FCSqliteIO::SaveToBackupToDisk(FCSqliteConnection const& source, char const* const filename)
-{
-    FCSqliteConnection target(filename);
-    Backup backup(target, source);
-    backup.Step();
 }

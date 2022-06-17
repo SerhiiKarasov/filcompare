@@ -1,3 +1,6 @@
+[submodule "submodules/SQLiteCpp"]
+	path = submodules/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp.git
 [submodule "submodules/googletest"]
 	path = submodules/googletest
 	url = https://github.com/google/googletest.git

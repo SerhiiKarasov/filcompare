@@ -17,7 +17,7 @@
 #include <sys/capability.h>  // for cap_get_file()
 #include <fstream>           // for ifstream
 #include <iostream>          // for cerr
-#include <experimental/filesystem>
+#include <filesystem>
 #include <algorithm>
 
 std::streamsize const kBufferSize = 4096;
@@ -205,7 +205,7 @@ bool FCFileInfoHelpers::isBlockDev(const std::string &filename) noexcept
 void FCFileInfoHelpers::createDir(const std::string &dirName) noexcept
 {
     std::error_code err;
-    std::experimental::filesystem::create_directory(dirName, err);
+    std::filesystem::create_directory(dirName, err);
     if (!err) {
         std::cerr << "Cannot create folder: " << dirName << std::endl;
         exit(-1);
@@ -215,7 +215,7 @@ void FCFileInfoHelpers::createDir(const std::string &dirName) noexcept
 bool FCFileInfoHelpers::fileExists(const std::string &fileName) noexcept
 {
     std::error_code err;
-    auto result = std::experimental::filesystem::exists(fileName, err);
+    auto result = std::filesystem::exists(fileName, err);
     if (!err) {
         std::cerr << "Cannot check if file exists: " << fileName << std::endl;
         exit(-1);
