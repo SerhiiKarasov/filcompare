@@ -1,5 +1,5 @@
-#ifndef SRC_FCSQLITECPPIMPL_HPP_
-#define SRC_FCSQLITECPPIMPL_HPP_
+#ifndef SRC_SQLITECPP_LIB_FCSQLITECPPIMPL_HPP_
+#define SRC_SQLITECPP_LIB_FCSQLITECPPIMPL_HPP_
 
 /**
  * @file FCSqliteCppImpl.hpp
@@ -25,4 +25,4 @@ class FCSqliteCppImpl : public IFCSqliteStorage
     virtual FCFileInfo::FCFiles ReadFromDb(const std::string& db_name) const override;
     virtual bool WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles& files) const override;
 };
-#endif  //  SRC_FCSQLITECPPIMPL_HPP_
+#endif  //  SRC_SQLITECPP_LIB_FCSQLITECPPIMPL_HPP_
