@@ -31,6 +31,18 @@ git@github.com:JossWhittle/FlintPlusPlus.git
 ```shell
 (python3 -m) cpplint --filter=-whitespace,-readability,-legal,-build/include_order *pp
 ```
+* run flawfinder check
+```
+pip install flawfinder
+```
+* run several static analysis tools
+```
+cppcheck --force --include=/usr/include --enable=all src/ > /tmp/analysis_cppcheck.txt 2>&1
+python3 -m cpplint --filter=-whitespace,-readability,-legal,-build/include_order src/*pp src/*/*pp  > /tmp/analysis_cpplint.txt 2>&1
+clang-tidy src/*pp src/*/*pp -checks=-*,clang-analyzer-*,-clang-analyzer-cplusplus* > /tmp/analysis_clangtidy.txt 2>&1
+flawfinder src/ > /tmp/analysis_flawfinder.txt 2>&1
+geany /tmp/analysis*.txt
+```
 * run valgrind check
 ```shell
 valgrind --leak-check=full --show-leak-kinds=all ./build/src/filcompare
