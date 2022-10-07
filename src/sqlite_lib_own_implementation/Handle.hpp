@@ -1,5 +1,5 @@
-#ifndef SRC_HANDLE_HPP_
-#define SRC_HANDLE_HPP_
+#ifndef SRC_SQLITE_LIB_OWN_IMPLEMENTATION_HANDLE_HPP_
+#define SRC_SQLITE_LIB_OWN_IMPLEMENTATION_HANDLE_HPP_
 
 /**
  * @file Handle.hpp
@@ -122,4 +122,4 @@ bool operator!=(Handle<Traits> const &left, Handle<Traits> const &right) noexcep
 {
     return !(left == right);
 }
-#endif  // SRC_HANDLE_HPP_
+#endif  // SRC_SQLITE_LIB_OWN_IMPLEMENTATION_HANDLE_HPP_
