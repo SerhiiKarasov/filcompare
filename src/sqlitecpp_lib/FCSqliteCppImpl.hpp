@@ -22,7 +22,7 @@
 class FCSqliteCppImpl : public IFCSqliteStorage
 {
   public:
-    virtual FCFileInfo::FCFiles ReadFromDb(const std::string& db_name) const override;
-    virtual bool WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles& files) const override;
+    FCFileInfo::FCFiles ReadFromDb(const std::string& db_name) const override;
+    bool WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles& files) const override;
 };
 #endif  //  SRC_SQLITECPP_LIB_FCSQLITECPPIMPL_HPP_

@@ -13,7 +13,7 @@
  *
  */
 
-#include <assert.h>
+#include <cassert>
 #include <utility>  //for swap
 template<typename T>
 class HandleTraits

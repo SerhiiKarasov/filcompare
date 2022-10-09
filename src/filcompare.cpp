@@ -4,7 +4,7 @@
 #include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
 #include "src/sqlitecpp_lib/FCSqliteCppImpl.hpp"
 
-#include <stdarg.h> /* Needed for the definition of va_list */
+#include <cstdarg> /* Needed for the definition of va_list */
 
 int main()
 {

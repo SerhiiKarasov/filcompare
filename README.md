@@ -39,7 +39,7 @@ pip install flawfinder
 ```
 cppcheck --force --include=/usr/include --enable=all src/ > /tmp/analysis_cppcheck.txt 2>&1
 python3 -m cpplint --filter=-whitespace,-readability,-legal,-build/include_order src/*pp src/*/*pp  > /tmp/analysis_cpplint.txt 2>&1
-clang-tidy src/*pp src/*/*pp -checks=-*,clang-analyzer-*,-clang-analyzer-cplusplus* > /tmp/analysis_clangtidy.txt 2>&1
+clang-tidy src/*pp src/*/*pp -checks=-*,clang-analyzer-*,modernize*,-clang-analyzer-cplusplus*> /tmp/analysis_clangtidy.txt 2>&1
 flawfinder src/ > /tmp/analysis_flawfinder.txt 2>&1
 geany /tmp/analysis*.txt
 ```
