@@ -1,5 +1,5 @@
-#ifndef SRC_FCSQLITELIB_HPP_
-#define SRC_FCSQLITELIB_HPP_
+#ifndef SRC_SQLITE_LIB_OWN_IMPLEMENTATION_FCSQLITELIB_HPP_
+#define SRC_SQLITE_LIB_OWN_IMPLEMENTATION_FCSQLITELIB_HPP_
 
 /**
  * @file FCSqliteLib.hpp
@@ -402,4 +402,4 @@ void Execute(FCSqliteConnection const &connection, C const *const text, Values &
     FCSqliteStatement(connection, text, std::forward<Values>(values)...).Execute();
 }
 
-#endif  //  SRC_FCSQLITELIB_HPP_
+#endif  //  SRC_SQLITE_LIB_OWN_IMPLEMENTATION_FCSQLITELIB_HPP_
