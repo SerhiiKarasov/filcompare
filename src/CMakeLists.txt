@@ -33,7 +33,15 @@ set_project_warnings(project_options)
 include(../cmake/StaticAnalyzers.cmake)
 
 target_compile_features(${PROJECT_NAME}_lib PUBLIC cxx_std_17)
-target_link_libraries(${PROJECT_NAME}_lib PUBLIC acl cap sqlite3 pthread dl ${ZLIB_LIBRARIES})
+target_link_libraries(
+    ${PROJECT_NAME}_lib
+    PUBLIC acl
+           cap
+           sqlite3
+           pthread
+           dl
+           ${ZLIB_LIBRARIES}
+           fmt::fmt)
 target_link_libraries(${PROJECT_NAME}_lib PRIVATE "stdc++fs")
 add_executable(${PROJECT_NAME} filcompare.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE submodules/SQLiteCpp/include/SQLiteCpp/)

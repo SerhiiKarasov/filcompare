@@ -11,7 +11,6 @@
  */
 
 #include "src/FCMount.hpp"
-#include <sstream>
 #include <iostream>
 #include <cerrno>
 #include <cstring>

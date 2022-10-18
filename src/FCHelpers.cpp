@@ -4,7 +4,7 @@
  * @brief a set of helper functions to be used by any class from the application
  *
  * @ingroup filcomp
-  *
+ *
  * @author Serhii Karasov
  * Contact: sergeyvkarasyov@gmail.com
  *
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <ctime>
-#include <sstream>
+#include <fmt/core.h>
 
 uint64_t FCHelpers::getProcessId()
 {
@@ -24,7 +24,5 @@ uint64_t FCHelpers::getProcessId()
 
 std::string FCHelpers::makeUniqueMountPointName(const std::string &deviceName)
 {
-    std::stringstream ss;
-    ss << "/tmp/" << FCHelpers::getProcessId() << "_" << deviceName;
-    return ss.str();
+    return fmt::format("/tmp/{}_{}", FCHelpers::getProcessId(), deviceName);
 }
