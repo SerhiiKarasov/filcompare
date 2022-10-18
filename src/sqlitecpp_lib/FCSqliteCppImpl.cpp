@@ -29,15 +29,15 @@ FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) cons
         std::stringstream select_command;
 
         select_command << "SELECT "
-                       << FCDataColumnNames::file << " ,"
-                       << FCDataColumnNames::size << " , "
-                       << FCDataColumnNames::crc << " , "
-                       << FCDataColumnNames::perm << " , "
-                       << FCDataColumnNames::type << " , "
-                       << FCDataColumnNames::owner << " , "
-                       << FCDataColumnNames::group << " , "
-                       << FCDataColumnNames::acls << " , "
-                       << FCDataColumnNames::caps << " "
+                       << FCDataColumnNames::file  << ", "
+                       << FCDataColumnNames::size  << ", "
+                       << FCDataColumnNames::crc   << ", "
+                       << FCDataColumnNames::perm  << ", "
+                       << FCDataColumnNames::type  << ", "
+                       << FCDataColumnNames::owner << ", "
+                       << FCDataColumnNames::group << ", "
+                       << FCDataColumnNames::acls  << ", "
+                       << FCDataColumnNames::caps  << " "
                        << " FROM files_data ;";
 
         std::cout << select_command.str() << std::endl;
@@ -50,8 +50,8 @@ FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) cons
                 query.getColumn(to_integral_type(FCDataColumns::caps)),
                 static_cast<uint64_t>(query.getColumn(to_integral_type(FCDataColumns::size)).getInt64()),
                 static_cast<uint64_t>(query.getColumn(to_integral_type(FCDataColumns::crc)).getInt64()),
-                query.getColumn(to_integral_type(FCDataColumns::perm)),
-                query.getColumn(to_integral_type(FCDataColumns::type)),
+                static_cast<uint64_t>(query.getColumn(to_integral_type(FCDataColumns::perm)).getInt64()),
+                static_cast<FCFileType>(static_cast<uint32_t>(query.getColumn(to_integral_type(FCDataColumns::type)))),
                 query.getColumn(to_integral_type(FCDataColumns::owner)),
                 query.getColumn(to_integral_type(FCDataColumns::group))));
         }

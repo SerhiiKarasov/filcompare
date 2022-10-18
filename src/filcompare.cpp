@@ -11,10 +11,13 @@ int main()
     FCFileInfo file1 = FCFileInfo::factory.constructFCFileInfoFromFs("/tmp/file1");
     FCFileInfo file2 = FCFileInfo::factory.constructFCFileInfoFromFs("/tmp/file2");
     FCFileInfo::FCFiles files{ file1, file2 };
-    std::unique_ptr<IFCSqliteStorage> sqlitewriter = std::make_unique<FCSqliteCppImpl>();
-    ;
-    sqlitewriter->WriteToDb("/tmp/mydb.db", files);
-    for (const auto &file_read : sqlitewriter->ReadFromDb("/tmp/mydb2.db")) {
+    std::unique_ptr<IFCSqliteStorage> sqlitewriter1 = std::make_unique<FCSqliteCppImpl>();
+    sqlitewriter1->WriteToDb("/tmp/mydb.db", files);
+    for (const auto &file_read : sqlitewriter1->ReadFromDb("/tmp/mydb.db")) {
+        std::cout << "we read " << file_read << std::endl;
+    }
+    std::unique_ptr<IFCSqliteStorage> sqlitewriter2 = std::make_unique<FCSqliteIO>();
+    for (const auto &file_read : sqlitewriter2->ReadFromDb("/tmp/mydb.db")) {
         std::cout << "we read " << file_read << std::endl;
     }
 }
