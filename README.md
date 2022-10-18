@@ -5,6 +5,22 @@ A tool for:
 	- dumping info on filesystem or folder content.  
 	- comparing content of folders, filesystems.  
 
+# how to test application on this stage of development
+```
+# the application needs:
+# 1) files to exist /tmp/file1, /tmp/file2
+touch /tmp/file1
+touch /tmp/file2
+# 2) file to not exist /tmp/mydb.db
+file="/tmp/mydb.db"
+if [ -f "$file" ] ; then
+    sudo rm "$file"
+fi
+# 3) be executed
+sudo ./filcompare
+echo $?
+```
+
 # dev hints
 * run build in docker locally
 ```shell
