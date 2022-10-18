@@ -1,8 +1,10 @@
 #include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
+
+#include <fmt/core.h>
+
 #include <map>
 #include <utility>
 #include <iostream>
-#include <sstream>
 
 /**
  * @file FCSqliteIO.cpp
@@ -42,23 +44,21 @@ FCFileInfo::FCFiles FCSqliteIO::ReadFromDb(const std::string& db_name) const
 
     try {
         FCSqliteConnection connection(db_name.c_str());
-        //TODO read count and resize files
-        std::stringstream select_command;
-        select_command << "SELECT "
-                       << FCDataColumnNames::file << " ,"
-                       << FCDataColumnNames::size << " , "
-                       << FCDataColumnNames::crc << " , "
-                       << FCDataColumnNames::perm << " , "
-                       << FCDataColumnNames::type << " , "
-                       << FCDataColumnNames::owner << " , "
-                       << FCDataColumnNames::group << " , "
-                       << FCDataColumnNames::acls << " , "
-                       << FCDataColumnNames::caps << " "
-                       << " FROM files_data ;";
+        // TODO read count and resize files
+        const auto select_command = fmt::format("SELECT {}, {}, {}, {}, {}, {}, {}, {}, {} FROM files_data;",
+            FCDataColumnNames::file,
+            FCDataColumnNames::size,
+            FCDataColumnNames::crc,
+            FCDataColumnNames::perm,
+            FCDataColumnNames::type,
+            FCDataColumnNames::owner,
+            FCDataColumnNames::group,
+            FCDataColumnNames::acls,
+            FCDataColumnNames::caps);
 
 
         // FCSqliteStatement select;
-        for (const auto& row : FCSqliteStatement(connection, select_command.str().c_str())) {
+        for (const auto& row : FCSqliteStatement(connection, select_command.c_str())) {
             files.push_back(FCFileInfo::FCFileInfoFactory::constructFCFileInfo(
                 row.GetString(to_integral_type(FCDataColumns::file)),
                 row.GetString(to_integral_type(FCDataColumns::acls)),
@@ -81,35 +81,46 @@ bool FCSqliteIO::WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles
 {
     try {
         FCSqliteConnection connection(db_name.c_str());
-        std::stringstream create_command;
-        create_command << "CREATE TABLE files_data ( "
-                       << FCDataColumnNames::file << " TEXT PRIMARY KEY NOT NULL, "
-                       << FCDataColumnNames::size << " INT NOT NULL, "
-                       << FCDataColumnNames::crc << " INT NOT NULL, "
-                       << FCDataColumnNames::perm << " INT NOT NULL, "
-                       << FCDataColumnNames::type << " INT NOT NULL, "
-                       << FCDataColumnNames::owner << " INT NOT NULL, "
-                       << FCDataColumnNames::group << " INT NOT NULL, "
-                       << FCDataColumnNames::acls << " TEXT NOT NULL, "
-                       << FCDataColumnNames::caps << " TEXT NOT NULL) "
-                       << " WITHOUT ROWID; ";
+        static constexpr const auto create_cmd_format = R"(
+            CREATE TABLE files_data (
+                {} TEXT PRIMARY KEY NOT NUL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} TEXT NOT NULL,
+                {} TEXT NOT NULL
+            ) WITHOUT ROWID;
+        )";
+        const auto create_command = fmt::format(create_cmd_format,
+            FCDataColumnNames::file,
+            FCDataColumnNames::size,
+            FCDataColumnNames::crc,
+            FCDataColumnNames::perm,
+            FCDataColumnNames::type,
+            FCDataColumnNames::owner,
+            FCDataColumnNames::group,
+            FCDataColumnNames::acls,
+            FCDataColumnNames::caps);
 
-        Execute(connection, create_command.str().c_str());
+        Execute(connection, create_command.c_str());
 
-        std::stringstream insert_command;
-        insert_command << "INSERT INTO files_data( "
-                       << FCDataColumnNames::file << " , "
-                       << FCDataColumnNames::size << " , "
-                       << FCDataColumnNames::crc << " , "
-                       << FCDataColumnNames::perm << " , "
-                       << FCDataColumnNames::type << " , "
-                       << FCDataColumnNames::owner << " , "
-                       << FCDataColumnNames::group << " , "
-                       << FCDataColumnNames::acls << " , "
-                       << FCDataColumnNames::caps << " ) "
-                       << "values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9) ;";
+        const auto insert_command = fmt::format(
+            "INSERT INTO files_data ({}, {}, {}, {}, {}, {}, {}, {}, {}) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9);",
+            FCDataColumnNames::file,
+            FCDataColumnNames::size,
+            FCDataColumnNames::crc,
+            FCDataColumnNames::perm,
+            FCDataColumnNames::type,
+            FCDataColumnNames::owner,
+            FCDataColumnNames::group,
+            FCDataColumnNames::acls,
+            FCDataColumnNames::caps);
 
-        FCSqliteStatement insert(connection, insert_command.str().c_str());
+
+        FCSqliteStatement insert(connection, insert_command.c_str());
 
         Execute(connection, "begin");
         for (const auto& file : files) {

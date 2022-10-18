@@ -11,7 +11,7 @@
  *
  */
 #include <iostream>
-#include <sstream>
+#include <fmt/core.h>
 #include "src/sqlitecpp_lib/FCSqliteCppImpl.hpp"
 #include "submodules/SQLiteCpp/include/SQLiteCpp/SQLiteCpp.h"
 #include "submodules/SQLiteCpp/include/SQLiteCpp/VariadicBind.h"
@@ -26,22 +26,19 @@ FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) cons
 
     try {
         SQLite::Database db(db_name);
-        std::stringstream select_command;
+        const auto select_command = fmt::format("SELECT {}, {}, {}, {}, {}, {}, {}, {}, {} FROM files_data;",
+            FCDataColumnNames::file,
+            FCDataColumnNames::size,
+            FCDataColumnNames::crc,
+            FCDataColumnNames::perm,
+            FCDataColumnNames::type,
+            FCDataColumnNames::owner,
+            FCDataColumnNames::group,
+            FCDataColumnNames::acls,
+            FCDataColumnNames::caps);
 
-        select_command << "SELECT "
-                       << FCDataColumnNames::file  << ", "
-                       << FCDataColumnNames::size  << ", "
-                       << FCDataColumnNames::crc   << ", "
-                       << FCDataColumnNames::perm  << ", "
-                       << FCDataColumnNames::type  << ", "
-                       << FCDataColumnNames::owner << ", "
-                       << FCDataColumnNames::group << ", "
-                       << FCDataColumnNames::acls  << ", "
-                       << FCDataColumnNames::caps  << " "
-                       << " FROM files_data ;";
-
-        std::cout << select_command.str() << std::endl;
-        SQLite::Statement query(db, select_command.str());
+        std::cout << select_command << std::endl;
+        SQLite::Statement query(db, select_command);
         // FCSqliteStatement select;
         while (query.executeStep()) {
             files.push_back(FCFileInfo::FCFileInfoFactory::constructFCFileInfo(
@@ -66,65 +63,66 @@ FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) cons
 bool FCSqliteCppImpl::WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles& files) const
 {
     try {
-        std::stringstream create_command;
-        create_command << "CREATE TABLE files_data ( "
-                       << FCDataColumnNames::file << " TEXT PRIMARY KEY NOT NULL, "
-                       << FCDataColumnNames::size << " INT NOT NULL, "
-                       << FCDataColumnNames::crc << " INT NOT NULL, "
-                       << FCDataColumnNames::perm << " INT NOT NULL, "
-                       << FCDataColumnNames::type << " INT NOT NULL, "
-                       << FCDataColumnNames::owner << " INT NOT NULL, "
-                       << FCDataColumnNames::group << " INT NOT NULL, "
-                       << FCDataColumnNames::acls << " TEXT NOT NULL, "
-                       << FCDataColumnNames::caps << " TEXT NOT NULL) "
-                       << " WITHOUT ROWID; ";
-        std::cout << create_command.str() << std::endl;
+        static constexpr const auto create_cmd_format = R"(
+            CREATE TABLE files_data (
+                {} TEXT PRIMARY KEY NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} INT NOT NULL,
+                {} TEXT NOT NULL,
+                {} TEXT NOT NULL
+            ) WITHOUT ROWID;
+        )";
+        const auto create_command = fmt::format(create_cmd_format,
+            FCDataColumnNames::file,
+            FCDataColumnNames::size,
+            FCDataColumnNames::crc,
+            FCDataColumnNames::perm,
+            FCDataColumnNames::type,
+            FCDataColumnNames::owner,
+            FCDataColumnNames::group,
+            FCDataColumnNames::acls,
+            FCDataColumnNames::caps);
+
+        std::cout << create_command << std::endl;
         SQLite::Database db(db_name, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
         std::cout << db_name << " constructor!" << std::endl;
         SQLite::Transaction transaction(db);
         std::cout << db_name << " transaction creation!" << std::endl;
         // create the db
-        db.exec(create_command.str());
+        db.exec(create_command);
         std::cout << db_name << " created!" << std::endl;
-
-        std::stringstream insert_command;
 
         for (const auto& file : files) {
             std::cout << file << std::endl;
-            std::stringstream insert_command;
-            insert_command << "INSERT INTO files_data( "
-                           << FCDataColumnNames::file << " , "
-                           << FCDataColumnNames::size << " , "
-                           << FCDataColumnNames::crc << " , "
-                           << FCDataColumnNames::perm << " , "
-                           << FCDataColumnNames::type << " , "
-                           << FCDataColumnNames::owner << " , "
-                           << FCDataColumnNames::group << " , "
-                           << FCDataColumnNames::acls << " , "
-                           << FCDataColumnNames::caps << " ) "
-                           << "values ("
-                           << "\"" << file.getFilePath() << "\""
-                           << " , "
-                           << "\"" << file.getFileSize() << "\""
-                           << " , "
-                           << "\"" << file.getFileCrc() << "\""
-                           << " , "
-                           << "\"" << file.getFilePerms() << "\""
-                           << " , "
-                           << "\"" << file.getFileTypeChar() << "\""
-                           << " , "
-                           << "\"" << file.getFileOwner() << "\""
-                           << " , "
-                           << "\"" << file.getFileOwnerGroup() << "\""
-                           << " , "
-                           << "\"" << file.getFileAcls() << "\""
-                           << " , "
-                           << "\"" << file.getFileCaps() << "\""
-                           << ") ;";
 
-            std::cout << insert_command.str() << std::endl;
+            const auto insert_command = fmt::format(
+                R"(INSERT INTO files_data ({}, {}, {}, {}, {}, {}, {}, {}, {}) values ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}");)",
+                FCDataColumnNames::file,
+                FCDataColumnNames::size,
+                FCDataColumnNames::crc,
+                FCDataColumnNames::perm,
+                FCDataColumnNames::type,
+                FCDataColumnNames::owner,
+                FCDataColumnNames::group,
+                FCDataColumnNames::acls,
+                FCDataColumnNames::caps,
+                file.getFilePath(),
+                file.getFileSize(),
+                file.getFileCrc(),
+                file.getFilePerms(),
+                file.getFileTypeChar(),
+                file.getFileOwner(),
+                file.getFileOwnerGroup(),
+                file.getFileAcls(),
+                file.getFileCaps());
 
-            SQLite::Statement query(db, insert_command.str());
+            std::cout << insert_command << std::endl;
+
+            SQLite::Statement query(db, insert_command);
             query.exec();
             query.reset();
         }
