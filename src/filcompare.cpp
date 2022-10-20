@@ -1,10 +1,9 @@
-#include <iostream>
-#include <string>
+#include "src/log.hpp"
 #include "src/FCFileInfo.hpp"
 #include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
 #include "src/sqlitecpp_lib/FCSqliteCppImpl.hpp"
 
-#include <cstdarg> /* Needed for the definition of va_list */
+#include <string>
 
 int main()
 {
@@ -14,10 +13,10 @@ int main()
     std::unique_ptr<IFCSqliteStorage> sqlitewriter1 = std::make_unique<FCSqliteCppImpl>();
     sqlitewriter1->WriteToDb("/tmp/mydb.db", files);
     for (const auto &file_read : sqlitewriter1->ReadFromDb("/tmp/mydb.db")) {
-        std::cout << "we read " << file_read << std::endl;
+        fclog::info("we read {}", file_read);
     }
     std::unique_ptr<IFCSqliteStorage> sqlitewriter2 = std::make_unique<FCSqliteIO>();
     for (const auto &file_read : sqlitewriter2->ReadFromDb("/tmp/mydb.db")) {
-        std::cout << "we read " << file_read << std::endl;
+        fclog::info("we read {}", file_read);
     }
 }

@@ -7,13 +7,15 @@
  * @brief a handle class for sqlite resources
  *
  * @ingroup filcomp
-  *
+ *
  * @author Serhii Karasov
  * Contact: sergeyvkarasyov@gmail.com
  *
  */
 
+#include "src/log.hpp"
 #include "src/sqlite_lib_own_implementation/Handle.hpp"
+
 #include <sqlite3.h>
 #include <string>
 #include <utility>  //for swap
@@ -47,7 +49,10 @@ class FCSqliteConnection
       public:
         static void Close(Type value) noexcept
         {
-            assert(SQLITE_OK == sqlite3_close(value));
+            const auto res = sqlite3_close(value);
+            if (res != SQLITE_OK) {
+                fclog::error("Could not handle. Error: ", res);
+            }
         }
     };
     using FCSqliteConnectionHandle = Handle<FCSqliteConnectionHandleTraits>;
@@ -127,7 +132,10 @@ class Backup
       public:
         static void Close(Type value) noexcept
         {
-            assert(SQLITE_OK == sqlite3_backup_finish(value));
+            const auto res = sqlite3_backup_finish(value);
+            if (res != SQLITE_OK) {
+                fclog::error("Could not handle. Error: ", res);
+            }
         }
     };
     using FCSqliteBackupHandle = Handle<FCSqliteBackupHandleTraits>;
@@ -217,7 +225,10 @@ class FCSqliteStatement : public Reader<FCSqliteStatement>
       public:
         static void Close(Type value) noexcept
         {
-            assert(SQLITE_OK == sqlite3_finalize(value));
+            const auto res = sqlite3_finalize(value);
+            if (res != SQLITE_OK) {
+                fclog::error("Could not handle. Error: ", res);
+            }
         }
     };
     using FCSqliteStatementHandle = Handle<FCSqliteStatementHandleTraits>;

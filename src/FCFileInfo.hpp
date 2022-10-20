@@ -19,6 +19,7 @@
 #include <functional>  //for std::hash
 #include <tuple>       //for tuple
 #include <vector>
+#include <spdlog/fmt/ostr.h>
 
 enum class FCFileType : char {
     REG_FILE = 'r',

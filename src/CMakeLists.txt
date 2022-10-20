@@ -41,11 +41,12 @@ target_link_libraries(
            pthread
            dl
            ${ZLIB_LIBRARIES}
-           fmt::fmt)
+           fmt::fmt
+           spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME}_lib PRIVATE "stdc++fs")
 add_executable(${PROJECT_NAME} filcompare.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE submodules/SQLiteCpp/include/SQLiteCpp/)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib ${PROJECT_NAME}_own_sqlite_lib
-                                              ${PROJECT_NAME}_sqlitecpp_lib)
+                                              ${PROJECT_NAME}_sqlitecpp_lib spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PRIVATE project_options)
 target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp)

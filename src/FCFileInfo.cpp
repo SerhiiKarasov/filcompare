@@ -10,7 +10,6 @@
  *
  */
 
-#include <iostream>
 #include <tuple>
 #include "src/FCFileInfoHelpers.hpp"
 #include "src/FCFileInfo.hpp"
