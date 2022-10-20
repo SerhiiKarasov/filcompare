@@ -11,11 +11,10 @@
  */
 
 #include "src/FCHelpers.hpp"
-#include <sys/types.h>
-#include <unistd.h>
-#include <iostream>
-#include <ctime>
+
 #include <fmt/core.h>
+#include <string>
+#include <unistd.h>
 
 uint64_t FCHelpers::getProcessId()
 {

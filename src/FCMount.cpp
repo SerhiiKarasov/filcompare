@@ -4,18 +4,20 @@
  * @brief a class to handle mounting of filesystems, images
  *
  * @ingroup filcomp
-  *
+ *
  * @author Serhii Karasov
  * Contact: sergeyvkarasyov@gmail.com
  *
  */
 
 #include "src/FCMount.hpp"
-#include <iostream>
+
+#include "src/FCFileInfoHelpers.hpp"
+#include "src/FCHelpers.hpp"
+#include "src/log.hpp"
+
 #include <cerrno>
 #include <cstring>
-#include "src/FCHelpers.hpp"
-#include "src/FCFileInfoHelpers.hpp"
 
 FCMount::FCMount(const std::string &what) : mountedDevice(what),
                                             mountPoint(makeUniqueMountPoint(what))
@@ -32,7 +34,7 @@ bool FCMount::mountFS(const std::string &what, const std::string &where)
 {
     auto mount_result = false;
     if (!FCFileInfoHelpers::fileExists(what)) {
-        std::cerr << "File doesn't exist: " << what << std::endl;
+        fclog::error("File doesn't exist: {}", what);
     }
     std::string mount_command = "";
     if (FCFileInfoHelpers::isBlockDev(what)) {
@@ -42,8 +44,8 @@ bool FCMount::mountFS(const std::string &what, const std::string &where)
     }
     mount_result = system(mount_command.c_str());
     if (0 != mount_result) {
-        std::cerr << "Cannot mount " << what << " to mount point " << where << std::endl;
-        std::cerr << "Return code from mount command " << mount_result << " " << std::strerror(errno) << std::endl;
+        fclog::error("Cannot mount {} to mount point {}", what, where);
+        fclog::error("Return code from mount command {} {}", mount_result, std::strerror(errno));
         mount_result = false;
     }
     return mount_result;
@@ -54,8 +56,8 @@ bool FCMount::umountFS(const std::string &where)
     auto unmount_command = "umount " + where;
     const auto umount_result = system(unmount_command.c_str());
     if (0 != umount_result) {
-        std::cerr << "Cannot unmount from: " << where << std::endl;
-        std::cerr << "Return code from umount command " << umount_result << " " << std::strerror(errno) << std::endl;
+        fclog::error("Cannot unmount from: {}", where);
+        fclog::error("Return code from umount command {} {}", umount_result, std::strerror(errno));
         return false;
     }
     return true;

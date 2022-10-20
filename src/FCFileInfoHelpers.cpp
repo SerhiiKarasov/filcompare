@@ -4,21 +4,23 @@
  * @brief a set of functions to get info on files from filesystem(calculate crc, get size, etc)
  *
  * @ingroup filcomp
-  *
+ *
  * @author Serhii Karasov
  * Contact: sergeyvkarasyov@gmail.com
  *
  */
 
 #include "src/FCFileInfoHelpers.hpp"
-#include <zlib.h>            // for crc32()
-#include <sys/stat.h>        // for struct stat
+
+#include "src/log.hpp"
+
+#include <algorithm>
+#include <filesystem>
+#include <fstream>           // for ifstream
 #include <sys/acl.h>         // for acl_get_file
 #include <sys/capability.h>  // for cap_get_file()
-#include <fstream>           // for ifstream
-#include <iostream>          // for cerr
-#include <filesystem>
-#include <algorithm>
+#include <sys/stat.h>        // for struct stat
+#include <zlib.h>            // for crc32()
 
 std::streamsize const kBufferSize = 4096;
 
@@ -36,14 +38,14 @@ std::pair<bool, uint64_t> FCFileInfoHelpers::readCrc(const std::string &t_File) 
                 crc = crc32(crc, reinterpret_cast<const Bytef *>(&buffer), ifs.gcount());
             } while (ifs);
         } else {
-            std::cerr << "Problem with opening the file: " << t_File << "'." << std::endl;
+            fclog::error("Problem with opening the file: {}", t_File);
             throw std::runtime_error("Failed to open file.");
         }
     } catch (std::exception &e) {
-        std::cerr << "Exception was caught during calculating of crc for file: " << t_File << ". Message: " << e.what() << '\n';
+        fclog::error("Exception was caught during calculating of crc for file: {}. Message: {}", t_File, e.what());
         result = false;
     } catch (...) {
-        std::cerr << "Caught an unknown exception during calculation crc for file: " << t_File << std::endl;
+        fclog::error("Caught an unknown exception during calculation crc for file: {}", t_File);
         result = false;
     }
     return std::pair<bool, uint64_t>(result, crc);
@@ -57,7 +59,7 @@ std::pair<bool, std::string> FCFileInfoHelpers::readAcls(const std::string &t_Fi
     try {
         acl_t fileAcl = acl_get_file(t_File.c_str(), ACL_TYPE_ACCESS);
         if (nullptr == fileAcl) {
-            std::cerr << "Failed to get ACL for file: " << t_File << "Errno= " << errno << std::endl;
+            fclog::error("Failed to get ACL for file: {}. Errno = {}", t_File, errno);
             result = false;
         }
         fileAclSize = acl_size(fileAcl);
@@ -65,10 +67,10 @@ std::pair<bool, std::string> FCFileInfoHelpers::readAcls(const std::string &t_Fi
         acl_free(fileAcl);
         aclstring.erase(std::remove_if(aclstring.begin(), aclstring.end(), ::isspace), aclstring.end());
     } catch (std::exception &e) {
-        std::cerr << "Exception was caught during reading acls for file: " << t_File << ". Message: " << e.what() << '\n';
+        fclog::error("Exception was caught during reading acls for file: {}. Message: {}", t_File, e.what());
         result = false;
     } catch (...) {
-        std::cerr << "Caught an unknown exception during reading acls for file: " << t_File << std::endl;
+        fclog::error("Caught an unknown exception during reading acls for file: {}", t_File);
         result = false;
     }
     return std::pair<bool, std::string>{ result, aclstring };
@@ -85,16 +87,16 @@ std::pair<bool, std::string> FCFileInfoHelpers::readCaps(const std::string &t_Fi
             const char *txt_caps = cap_to_text(fileCaps, nullptr);
             cap_free(fileCaps);
             if (!txt_caps) {
-                std::cerr << "Problem while running cap_to_text()." << t_File << std::endl;
+                fclog::error("Problem while running cap_to_text() on {}", t_File);
                 result = false;
             }
             CAPS = std::string(txt_caps);
         }
     } catch (std::exception &e) {
-        std::cerr << "Exception was caught during reading caps for file: " << t_File << ". Message: " << e.what() << '\n';
+        fclog::error("Exception was caught during reading caps for file: {}. Message: {}", t_File, e.what());
         result = false;
     } catch (...) {
-        std::cerr << "Caught an unknown exception during reading of caps for file: " << t_File << std::endl;
+        fclog::error("Caught an unknown exception during reading of caps for file: {}", t_File);
         result = false;
     }
     return std::pair<bool, std::string>(result, CAPS);
@@ -107,7 +109,7 @@ struct stat FCFileInfoHelpers::readFileStat(const std::string &t_File) noexcept
     };
     //lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
     if (-1 == lstat(t_File.c_str(), &fileattrib)) {
-        std::cerr << "Problem while running stat() on " << t_File << std::endl;
+        fclog::error("Problem while running stat() on {}", t_File);
     }
     return fileattrib;
 }
@@ -156,14 +158,14 @@ std::pair<bool, FCFileType> FCFileInfoHelpers::readFileType(const struct stat &t
         }
 
         if (FCFileType::ERR == fileType) {
-            std::cerr << "Problem while running checking file type on " << t_FileName << std::endl;
+            fclog::error("Problem while running checking file type on {}", t_FileName);
             result = false;
         }
     } catch (std::exception &e) {
-        std::cerr << "Exception was caught during reading file type for file: " << t_FileName << ". Message: " << e.what() << '\n';
+        fclog::error("Exception was caught during reading file type for file: {}. Message: {}", t_FileName, e.what());
         result = false;
     } catch (...) {
-        std::cerr << "Caught an unknown exception during reading of file type for file: " << t_FileName << std::endl;
+        fclog::error("Caught an unknown exception during reading of file type for file: {}", t_FileName);
         result = false;
     }
 
@@ -193,10 +195,10 @@ bool FCFileInfoHelpers::isBlockDev(const std::string &filename) noexcept
             break;
         }
     } catch (std::exception &e) {
-        std::cerr << "Exception was caught in isBlockDev for file: " << filename << ". Message: " << e.what() << '\n';
+        fclog::error("Exception was caught in isBlockDev for file: {}. Message: {}", filename, e.what());
         exit(-1);
     } catch (...) {
-        std::cerr << "Caught an unknown exception in isBlockDev for file: " << filename << std::endl;
+        fclog::error("Caught an unknown exception in isBlockDev for file: {}", filename);
         exit(-1);
     }
     return result;
@@ -207,7 +209,7 @@ void FCFileInfoHelpers::createDir(const std::string &dirName) noexcept
     std::error_code err;
     std::filesystem::create_directory(dirName, err);
     if (!err) {
-        std::cerr << "Cannot create folder: " << dirName << std::endl;
+        fclog::error("Cannot create folder: {}", dirName);
         exit(-1);
     }
 }
@@ -217,7 +219,7 @@ bool FCFileInfoHelpers::fileExists(const std::string &fileName) noexcept
     std::error_code err;
     auto result = std::filesystem::exists(fileName, err);
     if (!err) {
-        std::cerr << "Cannot check if file exists: " << fileName << std::endl;
+        fclog::error("Cannot check if file exists: {}", fileName);
         exit(-1);
     }
     return result;

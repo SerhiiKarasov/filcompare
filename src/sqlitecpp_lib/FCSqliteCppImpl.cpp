@@ -10,18 +10,20 @@
  * Contact: sergeyvkarasyov@gmail.com
  *
  */
-#include <iostream>
-#include <fmt/core.h>
 #include "src/sqlitecpp_lib/FCSqliteCppImpl.hpp"
-#include "submodules/SQLiteCpp/include/SQLiteCpp/SQLiteCpp.h"
-#include "submodules/SQLiteCpp/include/SQLiteCpp/VariadicBind.h"
+
+#include "src/log.hpp"
 #include "submodules/SQLiteCpp/include/SQLiteCpp/Database.h"
+#include "submodules/SQLiteCpp/include/SQLiteCpp/SQLiteCpp.h"
 #include "submodules/SQLiteCpp/include/SQLiteCpp/Statement.h"
+#include "submodules/SQLiteCpp/include/SQLiteCpp/VariadicBind.h"
+
+#include <fmt/core.h>
 #include <tuple>
 
 FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) const
 {
-    std::cout << db_name << std::endl;
+    fclog::info("Reading from db: {}", db_name);
     FCFileInfo::FCFiles files{};
 
     try {
@@ -37,7 +39,7 @@ FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) cons
             FCDataColumnNames::acls,
             FCDataColumnNames::caps);
 
-        std::cout << select_command << std::endl;
+        fclog::debug("{}", select_command);
         SQLite::Statement query(db, select_command);
         // FCSqliteStatement select;
         while (query.executeStep()) {
@@ -54,7 +56,7 @@ FCFileInfo::FCFiles FCSqliteCppImpl::ReadFromDb(const std::string& db_name) cons
         }
 
     } catch (const std::exception& e) {
-        std::cout << "exception: " << e.what() << std::endl;
+        fclog::error("Exception happened while reading from {}: '{}'", db_name, e.what());
         return files;
     }
     return files;
@@ -87,17 +89,17 @@ bool FCSqliteCppImpl::WriteToDb(const std::string& db_name, const FCFileInfo::FC
             FCDataColumnNames::acls,
             FCDataColumnNames::caps);
 
-        std::cout << create_command << std::endl;
+        fclog::debug("{}", create_command);
         SQLite::Database db(db_name, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-        std::cout << db_name << " constructor!" << std::endl;
+        fclog::debug("{} constructor!", db_name);
         SQLite::Transaction transaction(db);
-        std::cout << db_name << " transaction creation!" << std::endl;
+        fclog::debug("{} transaction creation!", db_name);
         // create the db
         db.exec(create_command);
-        std::cout << db_name << " created!" << std::endl;
+        fclog::debug("{} created!", db_name);
 
         for (const auto& file : files) {
-            std::cout << file << std::endl;
+            fclog::debug("{}", file);
 
             const auto insert_command = fmt::format(
                 R"(INSERT INTO files_data ({}, {}, {}, {}, {}, {}, {}, {}, {}) values ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}");)",
@@ -120,7 +122,7 @@ bool FCSqliteCppImpl::WriteToDb(const std::string& db_name, const FCFileInfo::FC
                 file.getFileAcls(),
                 file.getFileCaps());
 
-            std::cout << insert_command << std::endl;
+            fclog::debug("{}", insert_command);
 
             SQLite::Statement query(db, insert_command);
             query.exec();
@@ -130,7 +132,7 @@ bool FCSqliteCppImpl::WriteToDb(const std::string& db_name, const FCFileInfo::FC
 
 
     } catch (const std::exception& e) {
-        std::cout << "exception: " << e.what() << std::endl;
+        fclog::error("Exception happened while writing to {}: {}", db_name, e.what());
         return false;
     }
     return true;

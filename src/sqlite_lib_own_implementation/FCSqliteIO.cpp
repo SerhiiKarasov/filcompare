@@ -1,10 +1,10 @@
 #include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
 
-#include <fmt/core.h>
+#include "src/log.hpp"
 
+#include <fmt/core.h>
 #include <map>
 #include <utility>
-#include <iostream>
 
 /**
  * @file FCSqliteIO.cpp
@@ -72,7 +72,7 @@ FCFileInfo::FCFiles FCSqliteIO::ReadFromDb(const std::string& db_name) const
         }
 
     } catch (const FCSqliteException& ex) {
-        std::cerr << "Db read failed. Message: " << ex.Message << ". Error : " << ex.Result << std::endl;
+        fclog::error("Db read failed. Message: {}. Error: {}", ex.Message, ex.Result);
     }
     return files;
 }
@@ -138,7 +138,7 @@ bool FCSqliteIO::WriteToDb(const std::string& db_name, const FCFileInfo::FCFiles
         }
         Execute(connection, "commit");
     } catch (const FCSqliteException& ex) {
-        std::cerr << "Db write failed. Message: " << ex.Message << ". Error : " << ex.Result << std::endl;
+        fclog::error("Db write failed. Message: {}. Error: {}", ex.Message, ex.Result);
     }
     return true;
 }
