@@ -11,8 +11,7 @@ jobs:
           - 9
           - 10
           - 11
-        compiler:
-          - gcc
+          - 12
         build_type:
           - Release
 
@@ -21,7 +20,7 @@ jobs:
       - name: googletests_submodule_init
         run: git submodule update --init
       - name: docker_image_build
-        run: docker build --network=host -t build_filcompare .
+        run: docker build --build-arg GCC_VERSION=${{ matrix.compiler_version }} -t build_filcompare .
       - name: run_build_in_docker
         run: docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare
       - name: cmake_format

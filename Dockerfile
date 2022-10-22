@@ -1,5 +1,7 @@
 FROM ubuntu:jammy
 
+ARG GCC_VERSION="11"
+
 RUN apt-get update && \
 	apt-get install -y \
 	apt-transport-https \
@@ -16,8 +18,8 @@ RUN apt-get update && \
 	lsb-release \
 	software-properties-common \
 	wget \
-	gcc \
-	g++ \
+	gcc-${GCC_VERSION} \
+	g++-${GCC_VERSION} \
 	cmake \
     clang \
 #    clang-doc \
@@ -33,6 +35,8 @@ RUN apt-get update && \
 #    liblldb \
     python3-clang \
     python3-lldb \
+ && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 10 \
+ && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 10 \
  && pip3 install cpplint && \
 	pip3 install cmake_format && \
 	pip3 install pyyaml \
