@@ -14,39 +14,20 @@ add_library(
     FCHelpers.hpp
     IFCSqliteStorage.hpp)
 
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    target_compile_options(${PROJECT_NAME}_lib PRIVATE -Werror -Wall -Wextra)
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    target_compile_options(${PROJECT_NAME}_lib PRIVATE -Wall -Wextra -Weverything -Wno-c++98-compat
-                                                       -Wno-c++98-compat-pedantic)
-endif()
-
-# sanitizer options if supported by compiler
-include(../cmake/Sanitizers.cmake)
-enable_sanitizers(project_options)
-
-# standard compiler warnings
-include(../cmake/CompilerWarnings.cmake)
-set_project_warnings(project_options)
-
-# allow for static analysis options
-include(../cmake/StaticAnalyzers.cmake)
-
-target_compile_features(${PROJECT_NAME}_lib PUBLIC cxx_std_17)
 target_link_libraries(
     ${PROJECT_NAME}_lib
-    PUBLIC acl
+    PUBLIC ${ZLIB_LIBRARIES}
+           acl
            cap
-           sqlite3
-           pthread
            dl
-           ${ZLIB_LIBRARIES}
            fmt::fmt
-           spdlog::spdlog)
-target_link_libraries(${PROJECT_NAME}_lib PRIVATE "stdc++fs")
+           project_options
+           pthread
+           spdlog::spdlog
+           sqlite3
+           stdc++fs)
+
 add_executable(${PROJECT_NAME} filcompare.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE submodules/SQLiteCpp/include/SQLiteCpp/)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib ${PROJECT_NAME}_own_sqlite_lib
-                                              ${PROJECT_NAME}_sqlitecpp_lib spdlog::spdlog)
-target_link_libraries(${PROJECT_NAME} PRIVATE project_options)
-target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp)
+                                              ${PROJECT_NAME}_sqlitecpp_lib spdlog::spdlog project_options SQLiteCpp)

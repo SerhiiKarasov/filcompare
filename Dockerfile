@@ -51,12 +51,22 @@ CMD echo ${PWD} && \
     g++ --version && \
 	clang --version && \
 	echo ${CXX} && \
-	echo ${CC} && \
-	mkdir build && cd build && \
-	cmake .. && \
-	cmake -D ENABLE_TEST_COVERAGE=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  -DCMAKE_VERBOSE_MAKEFILE=TRUE -DENABLE_SANITIZER_ADDRESS=TRUE . && \
-	cmake --build . -- -j2 && \
-	cd tests && \
+	echo ${CC}     \
+ && rm -rf build && mkdir -vp build               \
+ && cmake                                         \
+      -DCMAKE_BUILD_TYPE=Debug                    \
+      -DWARNINGS_AS_ERRORS=OFF                    \
+      -DCMAKE_VERBOSE_MAKEFILE=TRUE               \
+      -DENABLE_SANITIZER_ADDRESS=TRUE             \
+      -DENABLE_COVERAGE=ON                        \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=ON          \
+      -S.                                         \
+      -Bbuild                                     \
+ && cmake                                         \
+      --build build                               \
+      --config Debug                              \
+      --parallel                                  \
+ && cd tests && \
 	ctest -V && \
 	cd ${PRJ_ROOT} && \
 	mkdir build/graphviz && \
