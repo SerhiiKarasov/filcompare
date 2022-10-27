@@ -36,15 +36,12 @@ jobs:
 
       - name: Clang build
         run: |
-          docker run --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare bash -c \
-          "  rm -rfv build                                                                  \
-          && mkdir build                                                                    \
-          && cd build                                                                       \
-          && export CC=/usr/bin/clang                                                       \
-          && export CXX=/usr/bin/clang++                                                    \
-          && cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..      \
-          && cmake --build . --parallel                                                     \
-          "
+          docker run \
+            --user $(id -u):$(id -g)                   \
+            -v $PWD:/opt/project                       \
+            -e CC=/usr/bin/clang                       \
+            -e CXX=/usr/bin/clang++                    \
+            build_filcompare
 
       - name: clang-tidy
         run: docker run --rm --user $(id -u):$(id -g) -v $PWD:/opt/project build_filcompare clang-tidy -p build/ -header-filter=.* -extra-arg=-std=c++17 -checks=*,-fuchsia*,-hicpp*,-llvm-header-guard,-llvm-include-order,-google-readability-braces-around-statements,-readability-avoid-const-params-in-decls,-modernize-use-trailing-return-type,-llvmlibc* src/*pp
