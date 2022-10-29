@@ -1,7 +1,7 @@
-#include "src/log.hpp"
-#include "src/FCFileInfo.hpp"
-#include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
-#include "src/sqlitecpp_lib/FCSqliteCppImpl.hpp"
+#include "log.hpp"
+#include "FCFileInfo.hpp"
+#include "sqlite_lib_own_implementation/FCSqliteIO.hpp"
+#include "sqlitecpp_lib/FCSqliteCppImpl.hpp"
 
 #include <string>
 

@@ -10,13 +10,14 @@
  * Contact: sergeyvkarasyov@gmail.com
  *
  */
-#include "src/sqlitecpp_lib/FCSqliteCppImpl.hpp"
+#include "FCSqliteCppImpl.hpp"
 
-#include "src/log.hpp"
-#include "submodules/SQLiteCpp/include/SQLiteCpp/Database.h"
-#include "submodules/SQLiteCpp/include/SQLiteCpp/SQLiteCpp.h"
-#include "submodules/SQLiteCpp/include/SQLiteCpp/Statement.h"
-#include "submodules/SQLiteCpp/include/SQLiteCpp/VariadicBind.h"
+#include "../log.hpp"
+
+#include <SQLiteCpp/Database.h>
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <SQLiteCpp/Statement.h>
+#include <SQLiteCpp/VariadicBind.h>
 
 #include <fmt/core.h>
 #include <tuple>

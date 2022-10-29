@@ -10,9 +10,9 @@
  *
  */
 
-#include "src/FCFileInfoHelpers.hpp"
+#include "FCFileInfoHelpers.hpp"
 
-#include "src/log.hpp"
+#include "log.hpp"
 
 #include <algorithm>
 #include <filesystem>

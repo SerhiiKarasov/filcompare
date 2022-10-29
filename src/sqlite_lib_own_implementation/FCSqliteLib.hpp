@@ -13,8 +13,8 @@
  *
  */
 
-#include "src/log.hpp"
-#include "src/sqlite_lib_own_implementation/Handle.hpp"
+#include "../log.hpp"
+#include "Handle.hpp"
 
 #include <sqlite3.h>
 #include <string>

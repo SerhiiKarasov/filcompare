@@ -16,8 +16,8 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include "src/sqlite_lib_own_implementation/FCSqliteLib.hpp"
-#include "src/IFCSqliteStorage.hpp"
+#include "FCSqliteLib.hpp"
+#include "../IFCSqliteStorage.hpp"
 #include <type_traits>
 class FCSqliteIO : public IFCSqliteStorage
 {
