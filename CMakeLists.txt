@@ -17,7 +17,6 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 include(cmake/StaticAnalyzers.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
-
-add_subdirectory(submodules)
+add_subdirectory(submodules EXCLUDE_FROM_ALL SYSTEM)
 add_subdirectory(src)
 add_subdirectory(tests)

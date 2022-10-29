@@ -8,8 +8,7 @@ set(SQLITECPP_RUN_CPPCHECK
     OFF
     CACHE BOOL "Do not run cppcheck for sqlitecpp")
 add_subdirectory(SQLiteCpp)
-
-add_subdirectory(fmt EXCLUDE_FROM_ALL)
+add_subdirectory(fmt)
 
 set(SPDLOG_FMT_EXTERNAL_HO ON)
-add_subdirectory(spdlog EXCLUDE_FROM_ALL)
+add_subdirectory(spdlog)

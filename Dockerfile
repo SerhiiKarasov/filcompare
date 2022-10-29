@@ -20,7 +20,6 @@ RUN apt-get update && \
 	wget \
 	gcc-${GCC_VERSION} \
 	g++-${GCC_VERSION} \
-	cmake \
     clang \
 #    clang-doc \
     clang-format \
@@ -42,6 +41,11 @@ RUN apt-get update && \
 	pip3 install pyyaml \
 && mkdir /opt/project
 
+# Install cmake v3.25 for SYSTEM property
+# https://cmake.org/cmake/help/latest/prop_dir/SYSTEM.html
+RUN wget -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.0-rc2/cmake-3.25.0-rc2-linux-x86_64.sh \
+ && bash /tmp/cmake.sh --skip-license --prefix=/usr --exclude-subdir \
+ && rm /tmp/cmake.sh
 WORKDIR /opt/project
 
 CMD echo ${PWD} && \
