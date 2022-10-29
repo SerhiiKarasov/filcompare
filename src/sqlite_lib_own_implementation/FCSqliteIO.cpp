@@ -1,6 +1,6 @@
-#include "src/sqlite_lib_own_implementation/FCSqliteIO.hpp"
+#include "FCSqliteIO.hpp"
 
-#include "src/log.hpp"
+#include "../log.hpp"
 
 #include <fmt/core.h>
 #include <map>

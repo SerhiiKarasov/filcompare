@@ -15,7 +15,7 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include "src/FCFileInfo.hpp"
+#include "FCFileInfo.hpp"
 
 class IFCSqliteStorage
 {

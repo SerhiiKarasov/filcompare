@@ -11,8 +11,8 @@
  */
 
 #include <tuple>
-#include "src/FCFileInfoHelpers.hpp"
-#include "src/FCFileInfo.hpp"
+#include "FCFileInfoHelpers.hpp"
+#include "FCFileInfo.hpp"
 
 
 static auto convertCharToType(const char type) -> FCFileType

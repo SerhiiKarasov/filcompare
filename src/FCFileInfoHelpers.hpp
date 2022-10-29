@@ -16,7 +16,7 @@
 #include <sys/stat.h>  // for stat()
 #include <utility>     // for pair<>
 #include <string>      // for string
-#include "src/FCFileInfo.hpp"
+#include "FCFileInfo.hpp"
 
 namespace FCFileInfoHelpers {
 std::pair<bool, uint64_t> readCrc(const std::string &t_File) noexcept;
